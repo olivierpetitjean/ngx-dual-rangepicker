@@ -12,6 +12,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import {
   NgxDualRangepickerComponent,
   DateRangeResult,
+  PickerPosition,
   SelectionMode,
 } from 'ngx-dual-rangepicker';
 import { CodeSnippetComponent } from '../../shared/code-snippet';
@@ -52,6 +53,7 @@ export class PlaygroundDemoComponent {
   // ── Component inputs ──────────────────────────────────────────────────────
   selectionMode = signal<SelectionMode>('date');
   lockedMode = signal<SelectionMode | null>(null);
+  position = signal<PickerPosition>('auto');
   enableTimePicker = signal(false);
   showPresets = signal(true);
   showModeSelector = signal(true);
@@ -93,6 +95,7 @@ export class PlaygroundDemoComponent {
     const attrs: string[] = [];
     if (this.selectionMode() !== 'date') attrs.push(`selectionMode="${this.selectionMode()}"`);
     if (this.lockedMode() !== null) attrs.push(`lockedMode="${this.lockedMode()}"`);
+    if (this.position() !== 'auto') attrs.push(`position="${this.position()}"`);
     if (this.enableTimePicker()) attrs.push(`[enableTimePicker]="true"`);
     if (!this.showPresets()) attrs.push(`[showPresets]="false"`);
     if (!this.showModeSelector()) attrs.push(`[showModeSelector]="false"`);

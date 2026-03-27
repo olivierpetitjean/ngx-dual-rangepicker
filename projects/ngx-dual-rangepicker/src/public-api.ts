@@ -4,7 +4,7 @@
 export { NgxDualRangepickerComponent } from './lib/ngx-dual-rangepicker.component';
 
 // Models and interfaces
-export type { DateRangeResult, DateRangePreset, SelectionMode } from './lib/date-range-picker.models';
+export type { DateRangeResult, DateRangePreset, SelectionMode, PickerPosition } from './lib/date-range-picker.models';
 
 // Configuration tokens
 export { DUAL_CALENDAR_INTL } from './lib/date-range-picker.tokens';

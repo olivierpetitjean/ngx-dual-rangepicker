@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   effect,
   ElementRef,
   forwardRef,
@@ -26,8 +27,22 @@ import {
 } from '@angular/cdk/overlay';
 
 import { DualCalendarPanelComponent } from './dual-calendar-panel.component';
-import { DateRangePreset, DateRangeResult, SelectionMode } from './date-range-picker.models';
+import { DateRangePreset, DateRangeResult, PickerPosition, SelectionMode } from './date-range-picker.models';
 import { DEFAULT_PRESETS } from './date-range-picker.presets';
+
+const POSITIONS: Record<Exclude<PickerPosition, 'auto'>, ConnectedPosition> = {
+  'bottom-start': { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top',    offsetY:  4 },
+  'bottom-end':   { originX: 'end',   originY: 'bottom', overlayX: 'end',   overlayY: 'top',    offsetY:  4 },
+  'top-start':    { originX: 'start', originY: 'top',    overlayX: 'start', overlayY: 'bottom', offsetY: -4 },
+  'top-end':      { originX: 'end',   originY: 'top',    overlayX: 'end',   overlayY: 'bottom', offsetY: -4 },
+};
+
+const AUTO_POSITIONS: ConnectedPosition[] = [
+  POSITIONS['bottom-start'],
+  POSITIONS['bottom-end'],
+  POSITIONS['top-start'],
+  POSITIONS['top-end'],
+];
 
 @Component({
   selector: 'ngx-dual-rangepicker',
@@ -69,6 +84,7 @@ export class NgxDualRangepickerComponent implements ControlValueAccessor, OnDest
   readonly showPresets = input<boolean>(true);
   readonly lockedMode = input<SelectionMode | null>(null);
   readonly layout = input<'auto' | 'horizontal' | 'vertical'>('auto');
+  readonly position = input<PickerPosition>('auto');
 
   // ── Outputs ───────────────────────────────────────────────────────────────
   readonly rangeChanged = output<DateRangeResult>();
@@ -80,10 +96,10 @@ export class NgxDualRangepickerComponent implements ControlValueAccessor, OnDest
   readonly currentRange = signal<DateRange<Date> | null>(null);
   readonly displayValue = signal<string>('');
 
-  readonly overlayPositions: ConnectedPosition[] = [
-    { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top', offsetY: 4 },
-    { originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'bottom', offsetY: -4 },
-  ];
+  readonly overlayPositions = computed<ConnectedPosition[]>(() => {
+    const pos = this.position();
+    return pos === 'auto' ? AUTO_POSITIONS : [POSITIONS[pos]];
+  });
 
   // ── CVA ───────────────────────────────────────────────────────────────────
   private onChange: (value: DateRangeResult | null) => void = () => {};

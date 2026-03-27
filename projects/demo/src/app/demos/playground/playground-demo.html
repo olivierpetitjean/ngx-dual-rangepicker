@@ -34,6 +34,21 @@
     </div>
 
     <div class="pg-group">
+      <div class="pg-label">position</div>
+      <mat-button-toggle-group
+        [value]="position()"
+        (change)="position.set($event.value)"
+        hideSingleSelectionIndicator
+      >
+        <mat-button-toggle value="auto">auto</mat-button-toggle>
+        <mat-button-toggle value="bottom-start">↙</mat-button-toggle>
+        <mat-button-toggle value="bottom-end">↘</mat-button-toggle>
+        <mat-button-toggle value="top-start">↖</mat-button-toggle>
+        <mat-button-toggle value="top-end">↗</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+
+    <div class="pg-group">
       <div class="pg-label">layout</div>
       <mat-button-toggle-group
         [value]="layout()"
@@ -158,6 +173,7 @@
       <ngx-dual-rangepicker
         [selectionMode]="selectionMode()"
         [lockedMode]="lockedMode()"
+        [position]="position()"
         [enableTimePicker]="enableTimePicker()"
         [showPresets]="showPresets()"
         [showModeSelector]="showModeSelector()"
