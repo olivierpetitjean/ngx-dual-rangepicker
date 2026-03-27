@@ -168,11 +168,15 @@ export class MonthRangeViewComponent {
   }
 
   nextLeftYear(): void {
-    this.leftYear.update((y) => y + 1);
+    if (this.leftYear() + 1 < this.rightYear()) {
+      this.leftYear.update((y) => y + 1);
+    }
   }
 
   prevRightYear(): void {
-    this.rightYear.update((y) => y - 1);
+    if (this.rightYear() - 1 > this.leftYear()) {
+      this.rightYear.update((y) => y - 1);
+    }
   }
 
   nextRightYear(): void {

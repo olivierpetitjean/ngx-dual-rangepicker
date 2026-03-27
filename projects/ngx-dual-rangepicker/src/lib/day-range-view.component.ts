@@ -164,15 +164,25 @@ export class DayRangeViewComponent {
   }
 
   nextLeftMonth(): void {
-    this.leftMonth.update((d) => this.dateAdapter.addCalendarMonths(d, 1));
+    const next = this.dateAdapter.addCalendarMonths(this.leftMonth(), 1);
+    if (this.monthIndex(next) < this.monthIndex(this.rightMonth())) {
+      this.leftMonth.set(next);
+    }
   }
 
   prevRightMonth(): void {
-    this.rightMonth.update((d) => this.dateAdapter.addCalendarMonths(d, -1));
+    const prev = this.dateAdapter.addCalendarMonths(this.rightMonth(), -1);
+    if (this.monthIndex(prev) > this.monthIndex(this.leftMonth())) {
+      this.rightMonth.set(prev);
+    }
   }
 
   nextRightMonth(): void {
     this.rightMonth.update((d) => this.dateAdapter.addCalendarMonths(d, 1));
+  }
+
+  private monthIndex(d: Date): number {
+    return this.dateAdapter.getYear(d) * 12 + this.dateAdapter.getMonth(d);
   }
 
   trackByWeek(_: number, week: (DayCell | null)[]): string {

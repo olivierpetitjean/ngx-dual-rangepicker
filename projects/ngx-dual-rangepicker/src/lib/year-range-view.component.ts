@@ -145,11 +145,15 @@ export class YearRangeViewComponent {
   }
 
   nextLeftPage(): void {
-    this.leftPageStart.update((s) => s + YEARS_PER_PANEL);
+    if (this.leftPageStart() + YEARS_PER_PANEL < this.rightPageStart()) {
+      this.leftPageStart.update((s) => s + YEARS_PER_PANEL);
+    }
   }
 
   prevRightPage(): void {
-    this.rightPageStart.update((s) => s - YEARS_PER_PANEL);
+    if (this.rightPageStart() - YEARS_PER_PANEL > this.leftPageStart()) {
+      this.rightPageStart.update((s) => s - YEARS_PER_PANEL);
+    }
   }
 
   nextRightPage(): void {
