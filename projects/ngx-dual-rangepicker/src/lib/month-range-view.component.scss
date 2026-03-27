@@ -5,6 +5,10 @@
 .drp-month-range-view {
   display: flex;
   gap: var(--drp-calendar-gap, 16px);
+
+  &.drp-vertical {
+    flex-direction: column;
+  }
 }
 
 .drp-month-panel {

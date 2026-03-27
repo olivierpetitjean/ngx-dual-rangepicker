@@ -60,6 +60,7 @@
           [min]="min()"
           [max]="max()"
           [selectedRange]="selectedRange()"
+          [vertical]="isVertical()"
           (rangeSelected)="onMonthRangeSelected($event)"
         />
       </div>
@@ -72,6 +73,7 @@
           [min]="min()"
           [max]="max()"
           [selectedRange]="selectedRange()"
+          [vertical]="isVertical()"
           (rangeSelected)="onYearRangeSelected($event)"
         />
       </div>

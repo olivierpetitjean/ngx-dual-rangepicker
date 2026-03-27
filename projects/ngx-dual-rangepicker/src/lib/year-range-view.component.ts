@@ -28,6 +28,7 @@ export class YearRangeViewComponent {
   readonly min = input<Date | null>(null);
   readonly max = input<Date | null>(null);
   readonly selectedRange = input<DateRange<Date | null> | null>(null);
+  readonly vertical = input<boolean>(false);
 
   /** Emitted when a complete year range has been selected. */
   readonly rangeSelected = output<DateRange<Date>>();
