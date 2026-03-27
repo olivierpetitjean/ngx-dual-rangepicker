@@ -30,8 +30,8 @@ export interface MonthCell {
 export class MonthRangeViewComponent {
   private readonly dateAdapter = inject<DateAdapter<Date>>(DateAdapter);
 
-  /** The year displayed in the left panel. The right panel shows year + 1. */
   readonly leftYear = model<number>(new Date().getFullYear());
+  readonly rightYear = signal<number>(new Date().getFullYear() + 1);
 
   readonly min = input<Date | null>(null);
   readonly max = input<Date | null>(null);
@@ -42,8 +42,6 @@ export class MonthRangeViewComponent {
   private readonly rangeStart = signal<{ year: number; month: number } | null>(null);
   private readonly rangeEnd = signal<{ year: number; month: number } | null>(null);
   private readonly hoverCell = signal<{ year: number; month: number } | null>(null);
-
-  readonly rightYear = computed(() => this.leftYear() + 1);
 
   readonly leftCells = computed(() => this.buildCells(this.leftYear()));
   readonly rightCells = computed(() => this.buildCells(this.rightYear()));
@@ -165,12 +163,20 @@ export class MonthRangeViewComponent {
     return a.month - b.month;
   }
 
-  prevYear(): void {
+  prevLeftYear(): void {
     this.leftYear.update((y) => y - 1);
   }
 
-  nextYear(): void {
+  nextLeftYear(): void {
     this.leftYear.update((y) => y + 1);
+  }
+
+  prevRightYear(): void {
+    this.rightYear.update((y) => y - 1);
+  }
+
+  nextRightYear(): void {
+    this.rightYear.update((y) => y + 1);
   }
 
   trackByMonth(_: number, cell: MonthCell): string {

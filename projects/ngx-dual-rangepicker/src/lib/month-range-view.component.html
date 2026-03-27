@@ -2,15 +2,9 @@
   <!-- Left panel: year N -->
   <div class="drp-month-panel">
     <div class="drp-month-panel-header">
-      <button
-        class="drp-nav-btn"
-        type="button"
-        (click)="prevYear()"
-        aria-label="Previous year"
-      >
-        &#8249;
-      </button>
+      <button class="drp-nav-btn" type="button" (click)="prevLeftYear()" aria-label="Previous year">&#8249;</button>
       <span class="drp-panel-year">{{ leftYear() }}</span>
+      <button class="drp-nav-btn" type="button" (click)="nextLeftYear()" aria-label="Next year">&#8250;</button>
     </div>
     <div class="drp-month-grid" role="grid" aria-label="Select start or end month">
       @for (row of leftRows(); track $index) {
@@ -42,15 +36,9 @@
   <!-- Right panel: year N+1 -->
   <div class="drp-month-panel">
     <div class="drp-month-panel-header">
+      <button class="drp-nav-btn" type="button" (click)="prevRightYear()" aria-label="Previous year">&#8249;</button>
       <span class="drp-panel-year">{{ rightYear() }}</span>
-      <button
-        class="drp-nav-btn"
-        type="button"
-        (click)="nextYear()"
-        aria-label="Next year"
-      >
-        &#8250;
-      </button>
+      <button class="drp-nav-btn" type="button" (click)="nextRightYear()" aria-label="Next year">&#8250;</button>
     </div>
     <div class="drp-month-grid" role="grid" aria-label="Select start or end month">
       @for (row of rightRows(); track $index) {

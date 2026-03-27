@@ -36,12 +36,11 @@ export class YearRangeViewComponent {
    * Right panel starts at leftPageStart + YEARS_PER_PANEL.
    */
   readonly leftPageStart = model<number>(this.defaultPageStart());
+  readonly rightPageStart = signal<number>(this.defaultPageStart() + YEARS_PER_PANEL);
 
   private readonly rangeStart = signal<number | null>(null);
   private readonly rangeEnd = signal<number | null>(null);
   private readonly hoverYear = signal<number | null>(null);
-
-  readonly rightPageStart = computed(() => this.leftPageStart() + YEARS_PER_PANEL);
 
   readonly leftCells = computed(() => this.buildCells(this.leftPageStart()));
   readonly rightCells = computed(() => this.buildCells(this.rightPageStart()));
@@ -141,11 +140,19 @@ export class YearRangeViewComponent {
     return '';
   }
 
-  prevPage(): void {
+  prevLeftPage(): void {
     this.leftPageStart.update((s) => s - YEARS_PER_PANEL);
   }
 
-  nextPage(): void {
+  nextLeftPage(): void {
     this.leftPageStart.update((s) => s + YEARS_PER_PANEL);
+  }
+
+  prevRightPage(): void {
+    this.rightPageStart.update((s) => s - YEARS_PER_PANEL);
+  }
+
+  nextRightPage(): void {
+    this.rightPageStart.update((s) => s + YEARS_PER_PANEL);
   }
 }

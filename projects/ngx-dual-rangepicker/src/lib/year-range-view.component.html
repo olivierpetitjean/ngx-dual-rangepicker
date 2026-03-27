@@ -2,15 +2,9 @@
   <!-- Left panel -->
   <div class="drp-year-panel">
     <div class="drp-year-panel-header">
-      <button
-        class="drp-nav-btn"
-        type="button"
-        (click)="prevPage()"
-        aria-label="Previous years"
-      >
-        &#8249;
-      </button>
+      <button class="drp-nav-btn" type="button" (click)="prevLeftPage()" aria-label="Previous years">&#8249;</button>
       <span class="drp-panel-range-label">{{ leftPageLabel() }}</span>
+      <button class="drp-nav-btn" type="button" (click)="nextLeftPage()" aria-label="Next years">&#8250;</button>
     </div>
     <div class="drp-year-grid" role="grid" aria-label="Select start or end year">
       @for (row of leftRows(); track $index) {
@@ -42,15 +36,9 @@
   <!-- Right panel -->
   <div class="drp-year-panel">
     <div class="drp-year-panel-header">
+      <button class="drp-nav-btn" type="button" (click)="prevRightPage()" aria-label="Previous years">&#8249;</button>
       <span class="drp-panel-range-label">{{ rightPageLabel() }}</span>
-      <button
-        class="drp-nav-btn"
-        type="button"
-        (click)="nextPage()"
-        aria-label="Next years"
-      >
-        &#8250;
-      </button>
+      <button class="drp-nav-btn" type="button" (click)="nextRightPage()" aria-label="Next years">&#8250;</button>
     </div>
     <div class="drp-year-grid" role="grid" aria-label="Select start or end year">
       @for (row of rightRows(); track $index) {

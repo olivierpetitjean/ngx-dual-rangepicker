@@ -2,15 +2,9 @@
   <!-- Left panel -->
   <div class="drp-day-panel">
     <div class="drp-day-panel-header">
-      <button
-        class="drp-nav-btn"
-        type="button"
-        (click)="prevMonth()"
-        aria-label="Previous month"
-      >
-        &#8249;
-      </button>
+      <button class="drp-nav-btn" type="button" (click)="prevLeftMonth()" aria-label="Previous month">&#8249;</button>
       <span class="drp-panel-month-label">{{ leftMonthLabel() }}</span>
+      <button class="drp-nav-btn" type="button" (click)="nextLeftMonth()" aria-label="Next month">&#8250;</button>
     </div>
     <div class="drp-day-grid" role="grid" [attr.aria-label]="leftMonthLabel()">
       <div class="drp-weekday-row">
@@ -49,15 +43,9 @@
   <!-- Right panel -->
   <div class="drp-day-panel">
     <div class="drp-day-panel-header">
+      <button class="drp-nav-btn" type="button" (click)="prevRightMonth()" aria-label="Previous month">&#8249;</button>
       <span class="drp-panel-month-label">{{ rightMonthLabel() }}</span>
-      <button
-        class="drp-nav-btn"
-        type="button"
-        (click)="nextMonth()"
-        aria-label="Next month"
-      >
-        &#8250;
-      </button>
+      <button class="drp-nav-btn" type="button" (click)="nextRightMonth()" aria-label="Next month">&#8250;</button>
     </div>
     <div class="drp-day-grid" role="grid" [attr.aria-label]="rightMonthLabel()">
       <div class="drp-weekday-row">

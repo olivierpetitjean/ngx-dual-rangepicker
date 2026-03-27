@@ -34,12 +34,11 @@ export class DayRangeViewComponent {
   readonly rangeSelected = output<DateRange<Date>>();
 
   readonly leftMonth = model<Date>(this.startOfCurrentMonth());
+  readonly rightMonth = signal<Date>(this.dateAdapter.addCalendarMonths(this.startOfCurrentMonth(), 1));
 
   private readonly rangeStart = signal<Date | null>(null);
   private readonly rangeEnd = signal<Date | null>(null);
   private readonly hoverDate = signal<Date | null>(null);
-
-  readonly rightMonth = computed(() => this.dateAdapter.addCalendarMonths(this.leftMonth(), 1));
 
   readonly weekdayLabels = computed(() => {
     const names = this.dateAdapter.getDayOfWeekNames('narrow');
@@ -160,12 +159,20 @@ export class DayRangeViewComponent {
     return '';
   }
 
-  prevMonth(): void {
+  prevLeftMonth(): void {
     this.leftMonth.update((d) => this.dateAdapter.addCalendarMonths(d, -1));
   }
 
-  nextMonth(): void {
+  nextLeftMonth(): void {
     this.leftMonth.update((d) => this.dateAdapter.addCalendarMonths(d, 1));
+  }
+
+  prevRightMonth(): void {
+    this.rightMonth.update((d) => this.dateAdapter.addCalendarMonths(d, -1));
+  }
+
+  nextRightMonth(): void {
+    this.rightMonth.update((d) => this.dateAdapter.addCalendarMonths(d, 1));
   }
 
   trackByWeek(_: number, week: (DayCell | null)[]): string {
