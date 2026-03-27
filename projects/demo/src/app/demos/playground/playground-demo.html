@@ -169,7 +169,19 @@
   <section class="pg-preview">
     <div class="pg-section-title">Visualisation</div>
 
-    <div class="pg-picker-box">
+    <!-- Grille de positionnement du champ -->
+    <div class="pg-anchor-grid">
+      @for (anchor of ['top-left','top-center','top-right','mid-left','mid-center','mid-right','bot-left','bot-center','bot-right']; track anchor) {
+        <button
+          class="pg-anchor-cell"
+          [class.pg-anchor-cell--active]="fieldAnchor() === anchor"
+          (click)="fieldAnchor.set(anchor)"
+          [matTooltip]="anchor"
+        ></button>
+      }
+    </div>
+
+    <div class="pg-picker-box" [class]="'pg-anchor-' + fieldAnchor()">
       <ngx-dual-rangepicker
         [selectionMode]="selectionMode()"
         [lockedMode]="lockedMode()"

@@ -54,6 +54,7 @@ export class PlaygroundDemoComponent {
   selectionMode = signal<SelectionMode>('date');
   lockedMode = signal<SelectionMode | null>(null);
   position = signal<PickerPosition>('auto');
+  fieldAnchor = signal<string>('top-left');
   enableTimePicker = signal(false);
   showPresets = signal(true);
   showModeSelector = signal(true);
