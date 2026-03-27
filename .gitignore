@@ -42,3 +42,7 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+# Internal planning / spec documents (not for public repo)
+PLAN.md
+SPEC-ngx-dual-rangepicker.md
