@@ -5,6 +5,47 @@
 [![npm version](https://img.shields.io/npm/v/ngx-dual-rangepicker.svg)](https://www.npmjs.com/package/ngx-dual-rangepicker)
 [![license](https://img.shields.io/npm/l/ngx-dual-rangepicker.svg)](LICENSE)
 
+<img src=".github/screenshot/00-preview.png" width="780">
+
+<details>
+<summary>More screenshots</summary>
+<br>
+<table>
+  <tr>
+    <th>Basic</th>
+    <th>Dark mode</th>
+  </tr>
+  <tr>
+    <td><img src=".github/screenshot/01-basic.png" width="380"></td>
+    <td><img src=".github/screenshot/02-dark-mode.png" width="380"></td>
+  </tr>
+  <tr>
+    <th>Custom theme</th>
+    <th>Vertical layout</th>
+  </tr>
+  <tr>
+    <td><img src=".github/screenshot/03-theme.png" width="380"></td>
+    <td><img src=".github/screenshot/07-vertical-mode.png" width="380"></td>
+  </tr>
+  <tr>
+    <th>Month mode</th>
+    <th>Year mode</th>
+  </tr>
+  <tr>
+    <td><img src=".github/screenshot/04-month-mode.png" width="380"></td>
+    <td><img src=".github/screenshot/05-year-mode.png" width="380"></td>
+  </tr>
+  <tr>
+    <th>Time picker</th>
+    <th>Without presets</th>
+  </tr>
+  <tr>
+    <td><img src=".github/screenshot/06-timepicker.png" width="380"></td>
+    <td><img src=".github/screenshot/08-without-pressets.png" width="380"></td>
+  </tr>
+</table>
+</details>
+
 ---
 
 ## Features
