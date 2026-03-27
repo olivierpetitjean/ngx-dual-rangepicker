@@ -4,8 +4,7 @@ import {
   computed,
   inject,
   input,
-  model,
-  OnInit,
+  linkedSignal,
   output,
   signal,
 } from '@angular/core';
@@ -28,11 +27,8 @@ export interface MonthCell {
   styleUrl: './month-range-view.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MonthRangeViewComponent implements OnInit {
+export class MonthRangeViewComponent {
   private readonly dateAdapter = inject<DateAdapter<Date>>(DateAdapter);
-
-  readonly leftYear = model<number>(new Date().getFullYear());
-  readonly rightYear = signal<number>(new Date().getFullYear() + 1);
 
   readonly min = input<Date | null>(null);
   readonly max = input<Date | null>(null);
@@ -41,14 +37,32 @@ export class MonthRangeViewComponent implements OnInit {
   /** Emitted when a complete month range has been selected. */
   readonly rangeSelected = output<DateRange<Date>>();
 
-  ngOnInit(): void {
-    const r = this.selectedRange();
-    this.rangeStart.set(r?.start ? { year: r.start.getFullYear(), month: r.start.getMonth() } : null);
-    this.rangeEnd.set(r?.end ? { year: r.end.getFullYear(), month: r.end.getMonth() } : null);
-  }
+  /** Suit la sélection lors d'un preset ou d'une réouverture, mais peut être écrasé par la navigation. */
+  readonly leftYear = linkedSignal<number>(() => {
+    const start = this.selectedRange()?.start;
+    return start?.getFullYear() ?? new Date().getFullYear();
+  });
 
-  private readonly rangeStart = signal<{ year: number; month: number } | null>(null);
-  private readonly rangeEnd = signal<{ year: number; month: number } | null>(null);
+  readonly rightYear = linkedSignal<number>(() => {
+    const start = this.selectedRange()?.start;
+    const end = this.selectedRange()?.end;
+    const leftY = start?.getFullYear() ?? new Date().getFullYear();
+    if (end) {
+      const endY = end.getFullYear();
+      return endY > leftY ? endY : leftY + 1;
+    }
+    return leftY + 1;
+  });
+
+  /** Réagit automatiquement aux changements de selectedRange (preset, réouverture). */
+  private readonly rangeStart = linkedSignal<{ year: number; month: number } | null>(() => {
+    const s = this.selectedRange()?.start;
+    return s ? { year: s.getFullYear(), month: s.getMonth() } : null;
+  });
+  private readonly rangeEnd = linkedSignal<{ year: number; month: number } | null>(() => {
+    const e = this.selectedRange()?.end;
+    return e ? { year: e.getFullYear(), month: e.getMonth() } : null;
+  });
   private readonly hoverCell = signal<{ year: number; month: number } | null>(null);
 
   readonly leftCells = computed(() => this.buildCells(this.leftYear()));

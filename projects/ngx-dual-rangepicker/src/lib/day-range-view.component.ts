@@ -4,8 +4,8 @@ import {
   computed,
   inject,
   input,
+  linkedSignal,
   model,
-  OnInit,
   output,
   signal,
 } from '@angular/core';
@@ -26,7 +26,7 @@ export interface DayCell {
   styleUrl: './day-range-view.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DayRangeViewComponent implements OnInit {
+export class DayRangeViewComponent {
   private readonly dateAdapter = inject<DateAdapter<Date>>(DateAdapter);
 
   readonly min = input<Date | null>(null);
@@ -35,17 +35,30 @@ export class DayRangeViewComponent implements OnInit {
 
   readonly rangeSelected = output<DateRange<Date>>();
 
-  ngOnInit(): void {
-    const r = this.selectedRange();
-    this.rangeStart.set(r?.start ?? null);
-    this.rangeEnd.set(r?.end ?? null);
-  }
-
   readonly leftMonth = model<Date>(this.startOfCurrentMonth());
-  readonly rightMonth = signal<Date>(this.dateAdapter.addCalendarMonths(this.startOfCurrentMonth(), 1));
 
-  private readonly rangeStart = signal<Date | null>(null);
-  private readonly rangeEnd = signal<Date | null>(null);
+  /** Suit la sélection lors d'un preset ou d'une réouverture, mais peut être écrasé par la navigation. */
+  readonly rightMonth = linkedSignal<Date>(() => {
+    const start = this.selectedRange()?.start;
+    const end = this.selectedRange()?.end;
+    const leftM = start
+      ? this.dateAdapter.createDate(start.getFullYear(), start.getMonth(), 1)
+      : this.startOfCurrentMonth();
+    if (end) {
+      const endM = this.dateAdapter.createDate(end.getFullYear(), end.getMonth(), 1);
+      if (
+        this.dateAdapter.getYear(endM) * 12 + this.dateAdapter.getMonth(endM) >
+        this.dateAdapter.getYear(leftM) * 12 + this.dateAdapter.getMonth(leftM)
+      ) {
+        return endM;
+      }
+    }
+    return this.dateAdapter.addCalendarMonths(leftM, 1);
+  });
+
+  /** Réagit automatiquement aux changements de selectedRange (preset, réouverture). */
+  private readonly rangeStart = linkedSignal<Date | null>(() => this.selectedRange()?.start ?? null);
+  private readonly rangeEnd = linkedSignal<Date | null>(() => this.selectedRange()?.end ?? null);
   private readonly hoverDate = signal<Date | null>(null);
 
   readonly weekdayLabels = computed(() => {

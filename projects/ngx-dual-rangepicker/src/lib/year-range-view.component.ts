@@ -3,8 +3,7 @@ import {
   Component,
   computed,
   input,
-  model,
-  OnInit,
+  linkedSignal,
   output,
   signal,
 } from '@angular/core';
@@ -25,7 +24,7 @@ const YEARS_PER_PANEL = 12;
   styleUrl: './year-range-view.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class YearRangeViewComponent implements OnInit {
+export class YearRangeViewComponent {
   readonly min = input<Date | null>(null);
   readonly max = input<Date | null>(null);
   readonly selectedRange = input<DateRange<Date | null> | null>(null);
@@ -33,21 +32,37 @@ export class YearRangeViewComponent implements OnInit {
   /** Emitted when a complete year range has been selected. */
   readonly rangeSelected = output<DateRange<Date>>();
 
-  ngOnInit(): void {
-    const r = this.selectedRange();
-    this.rangeStart.set(r?.start?.getFullYear() ?? null);
-    this.rangeEnd.set(r?.end?.getFullYear() ?? null);
-  }
+  /** Suit la sélection lors d'un preset ou d'une réouverture, mais peut être écrasé par la navigation. */
+  readonly leftPageStart = linkedSignal<number>(() => {
+    const start = this.selectedRange()?.start;
+    if (start) {
+      const y = start.getFullYear();
+      return y - (y % YEARS_PER_PANEL);
+    }
+    return this.defaultPageStart();
+  });
 
-  /**
-   * The first year of the left panel page.
-   * Right panel starts at leftPageStart + YEARS_PER_PANEL.
-   */
-  readonly leftPageStart = model<number>(this.defaultPageStart());
-  readonly rightPageStart = signal<number>(this.defaultPageStart() + YEARS_PER_PANEL);
+  readonly rightPageStart = linkedSignal<number>(() => {
+    const start = this.selectedRange()?.start;
+    const end = this.selectedRange()?.end;
+    const leftPage = start
+      ? (() => { const y = start.getFullYear(); return y - (y % YEARS_PER_PANEL); })()
+      : this.defaultPageStart();
+    if (end) {
+      const y = end.getFullYear();
+      const endPage = y - (y % YEARS_PER_PANEL);
+      return endPage > leftPage ? endPage : leftPage + YEARS_PER_PANEL;
+    }
+    return leftPage + YEARS_PER_PANEL;
+  });
 
-  private readonly rangeStart = signal<number | null>(null);
-  private readonly rangeEnd = signal<number | null>(null);
+  /** Réagit automatiquement aux changements de selectedRange (preset, réouverture). */
+  private readonly rangeStart = linkedSignal<number | null>(
+    () => this.selectedRange()?.start?.getFullYear() ?? null,
+  );
+  private readonly rangeEnd = linkedSignal<number | null>(
+    () => this.selectedRange()?.end?.getFullYear() ?? null,
+  );
   private readonly hoverYear = signal<number | null>(null);
 
   readonly leftCells = computed(() => this.buildCells(this.leftPageStart()));
