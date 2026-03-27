@@ -26,8 +26,8 @@
 @mixin color($theme) {
   ngx-dual-rangepicker {
     // Preset panel active state — defaults to primary-container
-    --drp-preset-active-bg: #{mat.get-theme-color($theme, primary, container)};
-    --drp-preset-active-color: #{mat.get-theme-color($theme, primary, on-container)};
+    --drp-preset-active-bg: #{mat.get-theme-color($theme, primary-container)};
+    --drp-preset-active-color: #{mat.get-theme-color($theme, on-primary-container)};
   }
 }
 
