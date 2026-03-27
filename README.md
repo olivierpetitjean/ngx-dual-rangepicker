@@ -56,21 +56,21 @@ export const appConfig: ApplicationConfig = {
 ### 2 — Import and use the component
 
 ```typescript
-import { NgxDualRangepickerComponent } from 'ngx-dual-rangepicker';
-import { DateRange } from '@angular/material/datepicker';
+import { FormsModule } from '@angular/forms';
+import { NgxDualRangepickerComponent, DateRangeResult } from 'ngx-dual-rangepicker';
 
 @Component({
   standalone: true,
-  imports: [NgxDualRangepickerComponent],
+  imports: [NgxDualRangepickerComponent, FormsModule],
   template: `
     <ngx-dual-rangepicker
-      [(selectedRange)]="range"
-      (rangeSelected)="onRange($event)"
+      [(ngModel)]="range"
+      (rangeChanged)="onRange($event)"
     />
   `,
 })
 export class MyComponent {
-  range = signal<DateRange<Date> | null>(null);
+  range: DateRangeResult | null = null;
 
   onRange(result: DateRangeResult) {
     console.log(result.start, result.end);
@@ -84,7 +84,6 @@ export class MyComponent {
 
 | Input | Type | Default | Description |
 |---|---|---|---|
-| `selectedRange` | `DateRange<Date> \| null` | `null` | Current selected range (two-way bindable via `model`) |
 | `min` | `Date \| null` | `null` | Minimum selectable date |
 | `max` | `Date \| null` | `null` | Maximum selectable date |
 | `presets` | `DateRangePreset[]` | built-in 9 | Preset list shown in the sidebar |
@@ -112,8 +111,9 @@ export class MyComponent {
 
 | Output | Type | Description |
 |---|---|---|
-| `rangeSelected` | `DateRangeResult` | Emitted when the user clicks **Apply** |
-| `cancelled` | `void` | Emitted when the user clicks **Cancel** |
+| `rangeChanged` | `DateRangeResult` | Emitted when the user clicks **Apply** |
+| `opened` | `void` | Emitted when the overlay opens |
+| `closed` | `void` | Emitted when the overlay closes |
 
 ### `DateRangeResult`
 
@@ -121,9 +121,9 @@ export class MyComponent {
 interface DateRangeResult {
   start: Date;
   end: Date;
-  startTime?: TimeValue;  // only when enableTimePicker = true
-  endTime?: TimeValue;    // only when enableTimePicker = true
-  preset?: string;        // label of the active preset, if any
+  startTime?: { hours: number; minutes: number }; // only when enableTimePicker = true
+  endTime?:   { hours: number; minutes: number }; // only when enableTimePicker = true
+  preset?: string;                                // label of the active preset, if any
 }
 ```
 

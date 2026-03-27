@@ -9,6 +9,7 @@ import {
   signal,
   ViewEncapsulation,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDividerModule } from '@angular/material/divider';
@@ -17,6 +18,8 @@ import { DateAdapter } from '@angular/material/core';
 import { DateRange } from '@angular/material/datepicker';
 import { FormsModule } from '@angular/forms';
 import { A11yModule } from '@angular/cdk/a11y';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { map } from 'rxjs';
 
 import { DayRangeViewComponent } from './day-range-view.component';
 import { MonthRangeViewComponent } from './month-range-view.component';
@@ -65,6 +68,19 @@ export class DualCalendarPanelComponent implements OnInit {
   // ── Outputs ───────────────────────────────────────────────────────────────
   readonly applied = output<DateRangeResult>();
   readonly cancelled = output<void>();
+
+  // ── Responsive: auto layout switches to vertical on narrow viewports ──────
+  private readonly isNarrow = toSignal(
+    inject(BreakpointObserver)
+      .observe('(max-width: 767px)')
+      .pipe(map(r => r.matches)),
+    { initialValue: false },
+  );
+
+  /** True when the panel should render in vertical mode (explicit or auto+narrow). */
+  readonly isVertical = computed(
+    () => this.layout() === 'vertical' || (this.layout() === 'auto' && this.isNarrow()),
+  );
 
   // ── Internal state ────────────────────────────────────────────────────────
   readonly activeMode = signal<SelectionMode>('date');

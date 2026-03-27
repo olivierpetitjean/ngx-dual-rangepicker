@@ -1,7 +1,7 @@
 <div
   class="drp-panel"
   [class.drp-layout-horizontal]="layout() === 'horizontal'"
-  [class.drp-layout-vertical]="layout() === 'vertical'"
+  [class.drp-layout-vertical]="isVertical()"
   cdkTrapFocus
   [cdkTrapFocusAutoCapture]="true"
 >
@@ -46,7 +46,7 @@
           [leftMonth]="leftMonth()"
           (leftMonthChange)="leftMonth.set($event)"
           [selectedRange]="selectedRange()"
-          [vertical]="layout() === 'vertical'"
+          [vertical]="isVertical()"
           (rangeSelected)="onDayRangeSelected($event)"
         />
       </div>
