@@ -7,6 +7,8 @@
 
 <img src=".github/screenshot/00-preview.png" width="780">
 
+**[Live demo →](https://olivierpetitjean.github.io/ngx-dual-rangepicker/)**
+
 <details>
 <summary>More screenshots</summary>
 <br>
