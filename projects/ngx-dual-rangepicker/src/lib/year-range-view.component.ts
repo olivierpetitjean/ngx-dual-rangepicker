@@ -2,9 +2,9 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  effect,
   input,
   model,
+  OnInit,
   output,
   signal,
 } from '@angular/core';
@@ -25,7 +25,7 @@ const YEARS_PER_PANEL = 12;
   styleUrl: './year-range-view.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class YearRangeViewComponent {
+export class YearRangeViewComponent implements OnInit {
   readonly min = input<Date | null>(null);
   readonly max = input<Date | null>(null);
   readonly selectedRange = input<DateRange<Date | null> | null>(null);
@@ -33,12 +33,10 @@ export class YearRangeViewComponent {
   /** Emitted when a complete year range has been selected. */
   readonly rangeSelected = output<DateRange<Date>>();
 
-  constructor() {
-    effect(() => {
-      const r = this.selectedRange();
-      this.rangeStart.set(r?.start?.getFullYear() ?? null);
-      this.rangeEnd.set(r?.end?.getFullYear() ?? null);
-    });
+  ngOnInit(): void {
+    const r = this.selectedRange();
+    this.rangeStart.set(r?.start?.getFullYear() ?? null);
+    this.rangeEnd.set(r?.end?.getFullYear() ?? null);
   }
 
   /**

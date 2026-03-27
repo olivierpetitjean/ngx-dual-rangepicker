@@ -2,10 +2,10 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  effect,
   inject,
   input,
   model,
+  OnInit,
   output,
   signal,
 } from '@angular/core';
@@ -26,7 +26,7 @@ export interface DayCell {
   styleUrl: './day-range-view.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DayRangeViewComponent {
+export class DayRangeViewComponent implements OnInit {
   private readonly dateAdapter = inject<DateAdapter<Date>>(DateAdapter);
 
   readonly min = input<Date | null>(null);
@@ -35,12 +35,10 @@ export class DayRangeViewComponent {
 
   readonly rangeSelected = output<DateRange<Date>>();
 
-  constructor() {
-    effect(() => {
-      const r = this.selectedRange();
-      this.rangeStart.set(r?.start ?? null);
-      this.rangeEnd.set(r?.end ?? null);
-    });
+  ngOnInit(): void {
+    const r = this.selectedRange();
+    this.rangeStart.set(r?.start ?? null);
+    this.rangeEnd.set(r?.end ?? null);
   }
 
   readonly leftMonth = model<Date>(this.startOfCurrentMonth());

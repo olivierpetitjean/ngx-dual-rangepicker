@@ -2,10 +2,10 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  effect,
   inject,
   input,
   model,
+  OnInit,
   output,
   signal,
 } from '@angular/core';
@@ -28,7 +28,7 @@ export interface MonthCell {
   styleUrl: './month-range-view.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MonthRangeViewComponent {
+export class MonthRangeViewComponent implements OnInit {
   private readonly dateAdapter = inject<DateAdapter<Date>>(DateAdapter);
 
   readonly leftYear = model<number>(new Date().getFullYear());
@@ -41,12 +41,10 @@ export class MonthRangeViewComponent {
   /** Emitted when a complete month range has been selected. */
   readonly rangeSelected = output<DateRange<Date>>();
 
-  constructor() {
-    effect(() => {
-      const r = this.selectedRange();
-      this.rangeStart.set(r?.start ? { year: r.start.getFullYear(), month: r.start.getMonth() } : null);
-      this.rangeEnd.set(r?.end ? { year: r.end.getFullYear(), month: r.end.getMonth() } : null);
-    });
+  ngOnInit(): void {
+    const r = this.selectedRange();
+    this.rangeStart.set(r?.start ? { year: r.start.getFullYear(), month: r.start.getMonth() } : null);
+    this.rangeEnd.set(r?.end ? { year: r.end.getFullYear(), month: r.end.getMonth() } : null);
   }
 
   private readonly rangeStart = signal<{ year: number; month: number } | null>(null);
