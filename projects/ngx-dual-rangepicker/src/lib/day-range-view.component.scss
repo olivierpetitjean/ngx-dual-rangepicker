@@ -52,12 +52,12 @@
 }
 
 .drp-weekday-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
   margin-bottom: 4px;
 }
 
 .drp-weekday-cell {
-  flex: 1;
   text-align: center;
   font-size: 0.75rem;
   color: var(--mat-sys-on-surface-variant);
@@ -66,14 +66,14 @@
 }
 
 .drp-day-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
 }
 
 .drp-day-cell {
-  flex: 1;
-  height: 36px;
+  aspect-ratio: 1;
   border: none;
-  border-radius: 18px;
+  border-radius: 50%;
   cursor: pointer;
   font-size: 0.8125rem;
   font-family: inherit;
@@ -99,7 +99,7 @@
   &.drp-range-end {
     background-color: var(--mat-sys-primary);
     color: var(--mat-sys-on-primary);
-    border-radius: 18px;
+    border-radius: 50%;
   }
 
   &.drp-in-range {
@@ -118,12 +118,12 @@
 // Round the edges of in-range / preview cells at start/end of each row
 .drp-day-row .drp-day-cell:first-child.drp-in-range,
 .drp-day-row .drp-day-cell:first-child.drp-preview {
-  border-top-left-radius: 18px;
-  border-bottom-left-radius: 18px;
+  border-top-left-radius: 50%;
+  border-bottom-left-radius: 50%;
 }
 
 .drp-day-row .drp-day-cell:last-child.drp-in-range,
 .drp-day-row .drp-day-cell:last-child.drp-preview {
-  border-top-right-radius: 18px;
-  border-bottom-right-radius: 18px;
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
 }
