@@ -51,6 +51,7 @@ export class PlaygroundDemoComponent {
 
   // ── Component inputs ──────────────────────────────────────────────────────
   selectionMode = signal<SelectionMode>('date');
+  lockedMode = signal<SelectionMode | null>(null);
   enableTimePicker = signal(false);
   showPresets = signal(true);
   showModeSelector = signal(true);
@@ -91,6 +92,7 @@ export class PlaygroundDemoComponent {
   get generatedSnippet(): string {
     const attrs: string[] = [];
     if (this.selectionMode() !== 'date') attrs.push(`selectionMode="${this.selectionMode()}"`);
+    if (this.lockedMode() !== null) attrs.push(`lockedMode="${this.lockedMode()}"`);
     if (this.enableTimePicker()) attrs.push(`[enableTimePicker]="true"`);
     if (!this.showPresets()) attrs.push(`[showPresets]="false"`);
     if (!this.showModeSelector()) attrs.push(`[showModeSelector]="false"`);

@@ -23,7 +23,7 @@
   <div class="drp-main">
 
     <!-- Mode selector -->
-    @if (showModeSelector()) {
+    @if (showModeSelector() && lockedMode() === null) {
       <div class="drp-mode-selector">
         <mat-button-toggle-group
           [value]="activeMode()"

@@ -67,6 +67,7 @@ export class NgxDualRangepickerComponent implements ControlValueAccessor, OnDest
   readonly required = input<boolean>(false);
   readonly showModeSelector = input<boolean>(true);
   readonly showPresets = input<boolean>(true);
+  readonly lockedMode = input<SelectionMode | null>(null);
   readonly layout = input<'auto' | 'horizontal' | 'vertical'>('auto');
 
   // ── Outputs ───────────────────────────────────────────────────────────────

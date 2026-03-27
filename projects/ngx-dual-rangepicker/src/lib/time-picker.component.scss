@@ -11,6 +11,9 @@
 
 .drp-time-field {
   width: 120px;
+  --mat-form-field-container-height: 40px;
+  --mat-form-field-filled-label-display: none;
+  --mat-form-field-container-vertical-padding: 8px;
 }
 
 .drp-time-arrow {

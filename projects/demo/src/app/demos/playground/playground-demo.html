@@ -20,6 +20,20 @@
     </div>
 
     <div class="pg-group">
+      <div class="pg-label">lockedMode</div>
+      <mat-button-toggle-group
+        [value]="lockedMode()"
+        (change)="lockedMode.set($event.value)"
+        hideSingleSelectionIndicator
+      >
+        <mat-button-toggle [value]="null">none</mat-button-toggle>
+        <mat-button-toggle value="date">date</mat-button-toggle>
+        <mat-button-toggle value="month">month</mat-button-toggle>
+        <mat-button-toggle value="year">year</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+
+    <div class="pg-group">
       <div class="pg-label">layout</div>
       <mat-button-toggle-group
         [value]="layout()"
@@ -143,6 +157,7 @@
     <div class="pg-picker-box">
       <ngx-dual-rangepicker
         [selectionMode]="selectionMode()"
+        [lockedMode]="lockedMode()"
         [enableTimePicker]="enableTimePicker()"
         [showPresets]="showPresets()"
         [showModeSelector]="showModeSelector()"

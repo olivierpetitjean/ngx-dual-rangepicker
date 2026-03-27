@@ -52,6 +52,7 @@ export class DualCalendarPanelComponent implements OnInit {
 
   // ── Inputs ────────────────────────────────────────────────────────────────
   readonly selectionMode = input<SelectionMode>('date');
+  readonly lockedMode = input<SelectionMode | null>(null);
   readonly enableTimePicker = input<boolean>(false);
   readonly presets = input<DateRangePreset[]>(DEFAULT_PRESETS);
   readonly min = input<Date | null>(null);
@@ -93,7 +94,7 @@ export class DualCalendarPanelComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.activeMode.set(this.selectionMode());
+    this.activeMode.set(this.lockedMode() ?? this.selectionMode());
     const initial = this.initialRange();
     if (initial?.start) {
       this.selectedRange.set(initial);
@@ -135,6 +136,7 @@ export class DualCalendarPanelComponent implements OnInit {
   // ── Mode selector ─────────────────────────────────────────────────────────
 
   onModeChange(mode: SelectionMode): void {
+    if (this.lockedMode() !== null) return;
     this.activeMode.set(mode);
   }
 
