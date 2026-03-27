@@ -45,6 +45,7 @@
           [max]="max()"
           [leftMonth]="leftMonth()"
           (leftMonthChange)="leftMonth.set($event)"
+          [selectedRange]="selectedRange()"
           (rangeSelected)="onDayRangeSelected($event)"
         />
       </div>
@@ -56,6 +57,7 @@
         <ngx-month-range-view
           [min]="min()"
           [max]="max()"
+          [selectedRange]="selectedRange()"
           (rangeSelected)="onMonthRangeSelected($event)"
         />
       </div>
@@ -67,6 +69,7 @@
         <ngx-year-range-view
           [min]="min()"
           [max]="max()"
+          [selectedRange]="selectedRange()"
           (rangeSelected)="onYearRangeSelected($event)"
         />
       </div>

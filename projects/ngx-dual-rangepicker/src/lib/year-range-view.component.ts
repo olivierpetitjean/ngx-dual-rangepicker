@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   input,
   model,
   output,
@@ -27,9 +28,18 @@ const YEARS_PER_PANEL = 12;
 export class YearRangeViewComponent {
   readonly min = input<Date | null>(null);
   readonly max = input<Date | null>(null);
+  readonly selectedRange = input<DateRange<Date | null> | null>(null);
 
   /** Emitted when a complete year range has been selected. */
   readonly rangeSelected = output<DateRange<Date>>();
+
+  constructor() {
+    effect(() => {
+      const r = this.selectedRange();
+      this.rangeStart.set(r?.start?.getFullYear() ?? null);
+      this.rangeEnd.set(r?.end?.getFullYear() ?? null);
+    });
+  }
 
   /**
    * The first year of the left panel page.

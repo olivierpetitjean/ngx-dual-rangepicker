@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   inject,
   input,
   model,
@@ -30,8 +31,17 @@ export class DayRangeViewComponent {
 
   readonly min = input<Date | null>(null);
   readonly max = input<Date | null>(null);
+  readonly selectedRange = input<DateRange<Date | null> | null>(null);
 
   readonly rangeSelected = output<DateRange<Date>>();
+
+  constructor() {
+    effect(() => {
+      const r = this.selectedRange();
+      this.rangeStart.set(r?.start ?? null);
+      this.rangeEnd.set(r?.end ?? null);
+    });
+  }
 
   readonly leftMonth = model<Date>(this.startOfCurrentMonth());
   readonly rightMonth = signal<Date>(this.dateAdapter.addCalendarMonths(this.startOfCurrentMonth(), 1));

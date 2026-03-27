@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   inject,
   input,
   model,
@@ -35,9 +36,18 @@ export class MonthRangeViewComponent {
 
   readonly min = input<Date | null>(null);
   readonly max = input<Date | null>(null);
+  readonly selectedRange = input<DateRange<Date | null> | null>(null);
 
   /** Emitted when a complete month range has been selected. */
   readonly rangeSelected = output<DateRange<Date>>();
+
+  constructor() {
+    effect(() => {
+      const r = this.selectedRange();
+      this.rangeStart.set(r?.start ? { year: r.start.getFullYear(), month: r.start.getMonth() } : null);
+      this.rangeEnd.set(r?.end ? { year: r.end.getFullYear(), month: r.end.getMonth() } : null);
+    });
+  }
 
   private readonly rangeStart = signal<{ year: number; month: number } | null>(null);
   private readonly rangeEnd = signal<{ year: number; month: number } | null>(null);
