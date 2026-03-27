@@ -1,0 +1,6 @@
+// Rounded variant — custom CSS properties
+.picker-rounded {
+  --drp-panel-border-radius: 24px;
+  --drp-preset-active-bg: var(--mat-sys-tertiary-container);
+  --drp-preset-active-color: var(--mat-sys-on-tertiary-container);
+}

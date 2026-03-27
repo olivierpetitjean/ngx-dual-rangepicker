@@ -1,0 +1,20 @@
+:host {
+  display: block;
+}
+
+.drp-time-picker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px var(--drp-panel-padding, 16px) 4px;
+}
+
+.drp-time-field {
+  width: 120px;
+}
+
+.drp-time-arrow {
+  color: var(--mat-sys-on-surface-variant);
+  flex-shrink: 0;
+  margin-top: 4px;
+}

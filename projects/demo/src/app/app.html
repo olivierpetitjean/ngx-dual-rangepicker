@@ -1,0 +1,59 @@
+<mat-sidenav-container class="demo-container">
+
+  <!-- ── Sidenav ───────────────────────────────────────────────────────────── -->
+  <mat-sidenav mode="side" opened class="demo-sidenav">
+
+    <div class="demo-sidenav-logo">
+      <mat-icon>event_note</mat-icon>
+      <div>
+        <div class="demo-sidenav-name">ngx-dual-rangepicker</div>
+        <div class="demo-sidenav-version">v1.0.0</div>
+      </div>
+    </div>
+
+    <mat-nav-list>
+      @for (item of navItems; track item.path) {
+        <a
+          mat-list-item
+          [routerLink]="item.path"
+          routerLinkActive="demo-nav-active"
+          [routerLinkActiveOptions]="{ exact: false }"
+        >
+          <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+          <span matListItemTitle>{{ item.label }}</span>
+        </a>
+      }
+    </mat-nav-list>
+
+  </mat-sidenav>
+
+  <!-- ── Main ──────────────────────────────────────────────────────────────── -->
+  <mat-sidenav-content>
+
+    <mat-toolbar class="demo-toolbar">
+      <span class="demo-toolbar-spacer"></span>
+      <a
+        mat-icon-button
+        href="https://github.com/olivierpetitjean/ngx-dual-rangepicker"
+        target="_blank"
+        rel="noopener noreferrer"
+        matTooltip="GitHub"
+      >
+        <mat-icon>open_in_new</mat-icon>
+      </a>
+      <button
+        mat-icon-button
+        (click)="theme.toggleDarkMode()"
+        [matTooltip]="theme.darkMode() ? 'Switch to light mode' : 'Switch to dark mode'"
+      >
+        <mat-icon>{{ theme.darkMode() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+      </button>
+    </mat-toolbar>
+
+    <div class="demo-content">
+      <router-outlet />
+    </div>
+
+  </mat-sidenav-content>
+
+</mat-sidenav-container>

@@ -1,0 +1,39 @@
+<div class="drp-time-picker">
+  <mat-form-field appearance="outline" subscriptSizing="dynamic" class="drp-time-field">
+    <mat-label>{{ intl.startTimeLabel }}</mat-label>
+    <input
+      matInput
+      type="text"
+      inputmode="numeric"
+      maxlength="5"
+      placeholder="00:00"
+      [value]="startTimeDisplay()"
+      (input)="onStartTimeInput($any($event.target).value)"
+      (blur)="onStartTimeBlur()"
+      aria-label="Start time"
+    />
+    @if (startError()) {
+      <mat-error>{{ startError() }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-icon class="drp-time-arrow">arrow_forward</mat-icon>
+
+  <mat-form-field appearance="outline" subscriptSizing="dynamic" class="drp-time-field">
+    <mat-label>{{ intl.endTimeLabel }}</mat-label>
+    <input
+      matInput
+      type="text"
+      inputmode="numeric"
+      maxlength="5"
+      placeholder="23:59"
+      [value]="endTimeDisplay()"
+      (input)="onEndTimeInput($any($event.target).value)"
+      (blur)="onEndTimeBlur()"
+      aria-label="End time"
+    />
+    @if (endError()) {
+      <mat-error>{{ endError() }}</mat-error>
+    }
+  </mat-form-field>
+</div>

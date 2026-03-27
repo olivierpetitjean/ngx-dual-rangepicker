@@ -1,0 +1,113 @@
+:host {
+  display: block;
+}
+
+.drp-month-range-view {
+  display: flex;
+  gap: var(--drp-calendar-gap, 16px);
+}
+
+.drp-month-panel {
+  flex: 1;
+  min-width: 200px;
+}
+
+.drp-month-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding: 0 4px;
+}
+
+.drp-panel-year {
+  font-weight: 500;
+  font-size: 0.9375rem;
+  color: var(--mat-sys-on-surface);
+}
+
+.drp-nav-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--mat-sys-on-surface-variant);
+  transition: background-color 0.15s;
+
+  &:hover {
+    background-color: var(--mat-sys-surface-variant);
+  }
+}
+
+.drp-month-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.drp-month-row {
+  display: flex;
+  gap: 4px;
+}
+
+.drp-month-cell {
+  flex: 1;
+  height: 36px;
+  border: none;
+  border-radius: 18px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-family: inherit;
+  background: transparent;
+  color: var(--mat-sys-on-surface);
+  transition: background-color 0.15s;
+  position: relative;
+
+  &:hover:not(:disabled) {
+    background-color: var(--mat-sys-surface-variant);
+  }
+
+  &:disabled {
+    color: var(--mat-sys-on-surface);
+    opacity: 0.38;
+    cursor: default;
+  }
+
+  &.drp-range-start,
+  &.drp-range-end {
+    background-color: var(--mat-sys-primary);
+    color: var(--mat-sys-on-primary);
+    border-radius: 18px;
+  }
+
+  &.drp-in-range {
+    background-color: var(--mat-sys-primary-container);
+    color: var(--mat-sys-on-primary-container);
+    border-radius: 0;
+  }
+
+  &.drp-preview {
+    background-color: var(--mat-sys-secondary-container);
+    color: var(--mat-sys-on-secondary-container);
+    border-radius: 0;
+  }
+}
+
+// Round the edges of in-range cells at start/end of each row
+.drp-month-row .drp-month-cell:first-child.drp-in-range,
+.drp-month-row .drp-month-cell:first-child.drp-preview {
+  border-top-left-radius: 18px;
+  border-bottom-left-radius: 18px;
+}
+
+.drp-month-row .drp-month-cell:last-child.drp-in-range,
+.drp-month-row .drp-month-cell:last-child.drp-preview {
+  border-top-right-radius: 18px;
+  border-bottom-right-radius: 18px;
+}

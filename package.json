@@ -1,0 +1,60 @@
+{
+  "name": "ngx-dual-rangepicker-workspace",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "ng": "ng",
+    "dev": "ng serve demo --open",
+    "build:lib": "ng build ngx-dual-rangepicker --configuration=production",
+    "build:lib:watch": "ng build ngx-dual-rangepicker --watch",
+    "build:demo": "ng build demo --configuration=production --output-path=dist/demo",
+    "build": "npm run build:lib",
+    "test": "ng test ngx-dual-rangepicker --watch=false --code-coverage",
+    "test:watch": "ng test ngx-dual-rangepicker",
+    "test:demo": "ng test demo --watch=false",
+    "lint": "ng lint",
+    "prepublish:lib": "npm run build:lib",
+    "publish:lib": "cd build/ngx-dual-rangepicker && npm publish",
+    "publish:lib:dry": "cd build/ngx-dual-rangepicker && npm publish --dry-run"
+  },
+  "prettier": {
+    "printWidth": 100,
+    "singleQuote": true,
+    "overrides": [
+      {
+        "files": "*.html",
+        "options": {
+          "parser": "angular"
+        }
+      }
+    ]
+  },
+  "dependencies": {
+    "@angular/animations": "^20.3.18",
+    "@angular/cdk": "^20.2.14",
+    "@angular/common": "^20.3.0",
+    "@angular/compiler": "^20.3.0",
+    "@angular/core": "^20.3.0",
+    "@angular/forms": "^20.3.0",
+    "@angular/material": "^20.2.14",
+    "@angular/platform-browser": "^20.3.0",
+    "@angular/router": "^20.3.0",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.15.0"
+  },
+  "devDependencies": {
+    "@angular/build": "^20.3.21",
+    "@angular/cli": "^20.3.3",
+    "@angular/compiler-cli": "^20.3.0",
+    "@types/jasmine": "~5.1.0",
+    "jasmine-core": "~5.9.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
+    "ng-packagr": "^20.3.0",
+    "typescript": "~5.9.2"
+  }
+}

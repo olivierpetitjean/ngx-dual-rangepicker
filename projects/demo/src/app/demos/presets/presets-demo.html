@@ -1,0 +1,45 @@
+<h1 class="demo-page-title">Custom presets</h1>
+<p class="demo-page-subtitle">
+  Presets are <code>DateRangePreset[]</code> objects — replace the default 9 with any list,
+  or hide the sidebar entirely with <code>[showPresets]="false"</code>.
+</p>
+
+<!-- Default -->
+<section class="demo-section">
+  <h2 class="demo-section-title">Default presets (9 built-in)</h2>
+  <div class="demo-box">
+    <ngx-dual-rangepicker
+      placeholder="Select a period"
+      [(ngModel)]="resultDefault"
+    />
+  </div>
+</section>
+
+<!-- Custom fiscal presets -->
+<section class="demo-section">
+  <h2 class="demo-section-title">Custom fiscal-year presets</h2>
+  <div class="demo-box">
+    <ngx-dual-rangepicker
+      placeholder="Select a fiscal quarter"
+      [presets]="fiscalPresets"
+      [(ngModel)]="resultCustom"
+    />
+  </div>
+  @if (resultCustom) {
+    <pre class="demo-json">{{ resultCustom | json }}</pre>
+  }
+  <app-code-snippet label="TypeScript" [code]="snippetCustom" />
+</section>
+
+<!-- No presets -->
+<section class="demo-section">
+  <h2 class="demo-section-title">No presets</h2>
+  <div class="demo-box">
+    <ngx-dual-rangepicker
+      placeholder="Calendar only — no presets"
+      [showPresets]="false"
+      [(ngModel)]="resultNoPresets"
+    />
+  </div>
+  <app-code-snippet label="HTML" [code]="snippetNoPresets" />
+</section>

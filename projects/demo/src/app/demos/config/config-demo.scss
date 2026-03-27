@@ -1,0 +1,101 @@
+// ── Two-column playground ─────────────────────────────────────────────────────
+.api-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 32px;
+  align-items: start;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ── Left column : knobs ───────────────────────────────────────────────────────
+.api-options {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 24px;
+  background: var(--mat-sys-surface-container-low);
+  border-radius: 12px;
+  position: sticky;
+  top: 80px; // below the toolbar
+}
+
+.knob-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.knob-toggles {
+  gap: 12px;
+}
+
+.knob-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--mat-sys-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+// ── Right column : preview ────────────────────────────────────────────────────
+.api-preview {
+  min-width: 0;
+}
+
+// ── API reference table ───────────────────────────────────────────────────────
+.api-table-wrapper {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid var(--mat-sys-outline-variant);
+  margin-bottom: 8px;
+}
+
+.api-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+
+  th {
+    background: var(--mat-sys-surface-container);
+    color: var(--mat-sys-on-surface-variant);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 10px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--mat-sys-outline-variant);
+  }
+
+  td {
+    padding: 10px 16px;
+    color: var(--mat-sys-on-surface);
+    border-bottom: 1px solid var(--mat-sys-outline-variant);
+    vertical-align: top;
+
+    code {
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.8125rem;
+      background: var(--mat-sys-surface-variant);
+      padding: 1px 5px;
+      border-radius: 4px;
+      color: var(--mat-sys-on-surface-variant);
+      white-space: nowrap;
+    }
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  tr:hover td {
+    background: var(--mat-sys-surface-container-low);
+  }
+}

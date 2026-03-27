@@ -1,0 +1,23 @@
+<div class="drp-calendar-header">
+  <button
+    mat-icon-button
+    type="button"
+    class="drp-header-arrow"
+    (click)="previousClicked()"
+    [attr.aria-label]="'Previous month'"
+  >
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+
+  <span class="drp-header-label">{{ periodLabel }}</span>
+
+  <button
+    mat-icon-button
+    type="button"
+    class="drp-header-arrow"
+    (click)="nextClicked()"
+    [attr.aria-label]="'Next month'"
+  >
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+</div>

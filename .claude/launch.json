@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "demo",
+      "runtimeExecutable": "cmd.exe",
+      "runtimeArgs": ["/c", "ng", "serve", "demo", "--port", "4201", "--ssl"],
+      "port": 4201
+    }
+  ]
+}

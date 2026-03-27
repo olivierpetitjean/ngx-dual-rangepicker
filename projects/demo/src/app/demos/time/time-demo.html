@@ -1,0 +1,28 @@
+<h1 class="demo-page-title">Time picker</h1>
+<p class="demo-page-subtitle">
+  Enable the time picker with <code>[enableTimePicker]="true"</code>. The result
+  includes <code>startTime</code> and <code>endTime</code> objects. When start and end
+  fall on the same day, the end time must be after the start time.
+</p>
+
+<!-- Live demo -->
+<section class="demo-section">
+  <h2 class="demo-section-title">Live demo</h2>
+  <div class="demo-box">
+    <ngx-dual-rangepicker
+      [enableTimePicker]="true"
+      placeholder="Select a date and time range"
+      [(ngModel)]="result"
+    />
+  </div>
+  @if (result) {
+    <pre class="demo-json">{{ result | json }}</pre>
+  }
+</section>
+
+<!-- Code -->
+<section class="demo-section">
+  <h2 class="demo-section-title">Code</h2>
+  <app-code-snippet label="HTML" [code]="snippetHtml" />
+  <app-code-snippet label="Result shape" [code]="snippetResult" />
+</section>

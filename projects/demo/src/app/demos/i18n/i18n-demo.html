@@ -1,0 +1,34 @@
+<h1 class="demo-page-title">Internationalisation</h1>
+<p class="demo-page-subtitle">
+  UI labels (Apply, Cancel, Days/Months/Years, Start/End time) are provided via the
+  <code>DUAL_CALENDAR_INTL</code> injection token with English defaults. Override it at any
+  injector level. Calendar day/month names are delegated to
+  Angular Material's <code>MAT_DATE_LOCALE</code>.
+</p>
+
+<!-- Live demo — French labels via component-level provider -->
+<section class="demo-section">
+  <h2 class="demo-section-title">French labels — component-level provider</h2>
+  <p style="color: var(--mat-sys-on-surface-variant); margin: 0 0 16px; font-size: 0.875rem;">
+    Open the picker and look at the Apply/Cancel buttons and mode selector labels —
+    they are rendered in French via a local <code>DUAL_CALENDAR_INTL</code> override.
+  </p>
+  <div class="demo-box">
+    <ngx-dual-rangepicker
+      placeholder="Sélectionner une période"
+      [enableTimePicker]="true"
+      [(ngModel)]="result"
+    />
+  </div>
+  <app-code-snippet label="TypeScript — provider" [code]="snippetToken" />
+</section>
+
+<!-- MAT_DATE_LOCALE -->
+<section class="demo-section">
+  <h2 class="demo-section-title">Calendar locale — <code>MAT_DATE_LOCALE</code></h2>
+  <p style="color: var(--mat-sys-on-surface-variant); margin: 0 0 16px; font-size: 0.875rem;">
+    Day and month names inside <code>mat-calendar</code> are controlled by Angular Material's own
+    date adapter locale. Provide <code>MAT_DATE_LOCALE</code> at the app or component level.
+  </p>
+  <app-code-snippet label="TypeScript" [code]="snippetDateLocale" />
+</section>

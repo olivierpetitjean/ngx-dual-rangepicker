@@ -1,0 +1,62 @@
+<!-- ── Trigger: mat-form-field acts as the picker input ──────────────────────── -->
+<mat-form-field
+  appearance="outline"
+  class="drp-trigger-field"
+  [class.drp-trigger-open]="isOpen()"
+  subscriptSizing="dynamic"
+  cdkOverlayOrigin
+  #trigger="cdkOverlayOrigin"
+  (click)="open()"
+>
+  <mat-label>{{ placeholder() }}</mat-label>
+  <mat-icon matPrefix>calendar_month</mat-icon>
+  <input
+    matInput
+    readonly
+    [value]="displayValue()"
+    [disabled]="disabled()"
+    (keydown.enter)="open()"
+    (keydown.space)="open()"
+    role="combobox"
+    [attr.aria-expanded]="isOpen()"
+    [attr.aria-haspopup]="'dialog'"
+  />
+  @if (displayValue()) {
+    <button
+      matIconSuffix
+      mat-icon-button
+      type="button"
+      aria-label="Clear selection"
+      (click)="$event.stopPropagation(); clearSelection()"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  }
+</mat-form-field>
+
+<!-- ── Overlay ─────────────────────────────────────────────────────────────── -->
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="trigger"
+  [cdkConnectedOverlayOpen]="isOpen()"
+  [cdkConnectedOverlayPositions]="overlayPositions"
+  [cdkConnectedOverlayHasBackdrop]="true"
+  cdkConnectedOverlayBackdropClass="drp-backdrop"
+  (backdropClick)="onBackdropClick()"
+  (detach)="close()"
+>
+  <ngx-dual-calendar-panel
+    [selectionMode]="selectionMode()"
+    [enableTimePicker]="enableTimePicker()"
+    [presets]="presets()"
+    [min]="min()"
+    [max]="max()"
+    [showModeSelector]="showModeSelector()"
+    [showPresets]="showPresets()"
+    [layout]="layout()"
+    [initialRange]="currentRange()"
+    (applied)="onApplied($event)"
+    (cancelled)="onCancelled()"
+    (keydown)="onOverlayKeydown($event)"
+  />
+</ng-template>

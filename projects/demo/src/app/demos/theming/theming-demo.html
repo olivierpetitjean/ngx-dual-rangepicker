@@ -1,0 +1,48 @@
+<h1 class="demo-page-title">Theming</h1>
+<p class="demo-page-subtitle">
+  <code>ngx-dual-rangepicker</code> uses Angular Material M3 system tokens for all
+  colors, typography, and elevation — no hardcoded values. Customize globally via
+  <code>mat.theme()</code> or per-instance via <code>--drp-*</code> CSS custom properties.
+</p>
+
+<!-- Default -->
+<section class="demo-section">
+  <h2 class="demo-section-title">Default (inherits your M3 theme)</h2>
+  <div class="demo-box">
+    <ngx-dual-rangepicker placeholder="Default theme" [(ngModel)]="resultDefault" />
+  </div>
+  <app-code-snippet label="styles.scss" [code]="snippetTheme" />
+</section>
+
+<!-- Rounded variant -->
+<section class="demo-section">
+  <h2 class="demo-section-title">Rounded variant — CSS custom properties</h2>
+  <div class="demo-box">
+    <ngx-dual-rangepicker
+      class="picker-rounded"
+      placeholder="Rounded style"
+      [(ngModel)]="resultRounded"
+    />
+  </div>
+  <app-code-snippet label="CSS" [code]="snippetCssVars" />
+</section>
+
+<!-- Compact -->
+<section class="demo-section">
+  <h2 class="demo-section-title">Compact — no presets, no mode selector</h2>
+  <div class="demo-box">
+    <ngx-dual-rangepicker
+      class="picker-compact"
+      placeholder="Compact style"
+      [showPresets]="false"
+      [showModeSelector]="false"
+      [(ngModel)]="resultCompact"
+    />
+  </div>
+</section>
+
+<!-- SCSS mixin -->
+<section class="demo-section">
+  <h2 class="demo-section-title">SCSS theme mixin (advanced)</h2>
+  <app-code-snippet label="SCSS" [code]="snippetScss" />
+</section>

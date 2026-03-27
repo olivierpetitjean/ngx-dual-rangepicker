@@ -1,0 +1,211 @@
+<h1 class="demo-page-title">API — Configuration</h1>
+<p class="demo-page-subtitle">
+  Toutes les options disponibles à gauche — le picker se met à jour en temps réel.
+  Le snippet généré reflète exactement ta configuration.
+</p>
+
+<!-- ── Two-column playground ──────────────────────────────────────────────── -->
+<section class="demo-section">
+  <div class="api-layout">
+
+    <!-- ── Left : knobs ──────────────────────────────────────────────────── -->
+    <div class="api-options">
+
+      <div class="knob-group">
+        <div class="knob-label">selectionMode</div>
+        <mat-button-toggle-group
+          [value]="selectionMode()"
+          (change)="selectionMode.set($event.value)"
+          hideSingleSelectionIndicator
+        >
+          <mat-button-toggle value="date">date</mat-button-toggle>
+          <mat-button-toggle value="month">month</mat-button-toggle>
+          <mat-button-toggle value="year">year</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+
+      <div class="knob-group">
+        <div class="knob-label">layout</div>
+        <mat-button-toggle-group
+          [value]="layout()"
+          (change)="layout.set($event.value)"
+          hideSingleSelectionIndicator
+        >
+          <mat-button-toggle value="auto">auto</mat-button-toggle>
+          <mat-button-toggle value="horizontal">horizontal</mat-button-toggle>
+          <mat-button-toggle value="vertical">vertical</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+
+      <div class="knob-group">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>placeholder</mat-label>
+          <input
+            matInput
+            [value]="placeholder()"
+            (input)="placeholder.set($any($event.target).value)"
+          />
+        </mat-form-field>
+      </div>
+
+      <mat-divider />
+
+      <div class="knob-group knob-toggles">
+        <mat-slide-toggle [checked]="enableTimePicker()" (change)="enableTimePicker.set($event.checked)">
+          enableTimePicker
+        </mat-slide-toggle>
+        <mat-slide-toggle [checked]="showPresets()" (change)="showPresets.set($event.checked)">
+          showPresets
+        </mat-slide-toggle>
+        <mat-slide-toggle [checked]="showModeSelector()" (change)="showModeSelector.set($event.checked)">
+          showModeSelector
+        </mat-slide-toggle>
+        <mat-slide-toggle [checked]="disabled()" (change)="disabled.set($event.checked)">
+          disabled
+        </mat-slide-toggle>
+        <mat-slide-toggle [checked]="required()" (change)="required.set($event.checked)">
+          required
+        </mat-slide-toggle>
+      </div>
+    </div>
+
+    <!-- ── Right : live picker + result ──────────────────────────────────── -->
+    <div class="api-preview">
+      <div class="demo-box" style="margin-bottom: 16px;">
+        <ngx-dual-rangepicker
+          [selectionMode]="selectionMode()"
+          [enableTimePicker]="enableTimePicker()"
+          [showPresets]="showPresets()"
+          [showModeSelector]="showModeSelector()"
+          [layout]="layout()"
+          [placeholder]="placeholder()"
+          [disabled]="disabled()"
+          [required]="required()"
+          [(ngModel)]="result"
+        />
+      </div>
+
+      @if (result) {
+        <pre class="demo-json" style="margin-bottom: 16px;">{{ result | json }}</pre>
+      }
+
+      <app-code-snippet label="Snippet généré" [code]="generatedSnippet" />
+    </div>
+
+  </div>
+</section>
+
+<!-- ── API Reference table ────────────────────────────────────────────────── -->
+<section class="demo-section">
+  <h2 class="demo-section-title">Référence des inputs</h2>
+  <div class="api-table-wrapper">
+    <table class="api-table">
+      <thead>
+        <tr>
+          <th>Input</th>
+          <th>Type</th>
+          <th>Défaut</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>selectionMode</code></td>
+          <td><code>'date' | 'month' | 'year'</code></td>
+          <td><code>'date'</code></td>
+          <td>Granularité de la sélection</td>
+        </tr>
+        <tr>
+          <td><code>enableTimePicker</code></td>
+          <td><code>boolean</code></td>
+          <td><code>false</code></td>
+          <td>Affiche les champs Start / End time</td>
+        </tr>
+        <tr>
+          <td><code>presets</code></td>
+          <td><code>DateRangePreset[]</code></td>
+          <td>9 presets</td>
+          <td>Liste de raccourcis de période</td>
+        </tr>
+        <tr>
+          <td><code>showPresets</code></td>
+          <td><code>boolean</code></td>
+          <td><code>true</code></td>
+          <td>Affiche / masque le panneau presets</td>
+        </tr>
+        <tr>
+          <td><code>showModeSelector</code></td>
+          <td><code>boolean</code></td>
+          <td><code>true</code></td>
+          <td>Affiche / masque le sélecteur Jours / Mois / Années</td>
+        </tr>
+        <tr>
+          <td><code>layout</code></td>
+          <td><code>'auto' | 'horizontal' | 'vertical'</code></td>
+          <td><code>'auto'</code></td>
+          <td>Disposition du panneau (auto = responsive)</td>
+        </tr>
+        <tr>
+          <td><code>placeholder</code></td>
+          <td><code>string</code></td>
+          <td><code>'Select a date range'</code></td>
+          <td>Texte affiché dans le champ vide</td>
+        </tr>
+        <tr>
+          <td><code>min</code></td>
+          <td><code>Date | null</code></td>
+          <td><code>null</code></td>
+          <td>Date minimale sélectionnable</td>
+        </tr>
+        <tr>
+          <td><code>max</code></td>
+          <td><code>Date | null</code></td>
+          <td><code>null</code></td>
+          <td>Date maximale sélectionnable</td>
+        </tr>
+        <tr>
+          <td><code>disabled</code></td>
+          <td><code>boolean</code></td>
+          <td><code>false</code></td>
+          <td>Désactive le composant (CVA compatible)</td>
+        </tr>
+        <tr>
+          <td><code>required</code></td>
+          <td><code>boolean</code></td>
+          <td><code>false</code></td>
+          <td>Marque le champ comme obligatoire</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 class="demo-section-title" style="margin-top: 32px;">Outputs</h2>
+  <div class="api-table-wrapper">
+    <table class="api-table">
+      <thead>
+        <tr>
+          <th>Output</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>rangeChanged</code></td>
+          <td><code>EventEmitter&lt;DateRangeResult&gt;</code></td>
+          <td>Émis à chaque clic sur Apply</td>
+        </tr>
+        <tr>
+          <td><code>opened</code></td>
+          <td><code>EventEmitter&lt;void&gt;</code></td>
+          <td>Émis à l'ouverture du panneau</td>
+        </tr>
+        <tr>
+          <td><code>closed</code></td>
+          <td><code>EventEmitter&lt;void&gt;</code></td>
+          <td>Émis à la fermeture du panneau</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

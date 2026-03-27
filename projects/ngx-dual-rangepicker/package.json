@@ -1,0 +1,32 @@
+{
+  "name": "ngx-dual-rangepicker",
+  "version": "0.1.0",
+  "description": "Dual calendar date range picker for Angular Material — with presets, month/year selection, and optional time picker",
+  "keywords": [
+    "angular",
+    "material",
+    "datepicker",
+    "daterange",
+    "range-picker",
+    "dual-calendar",
+    "date-range-picker",
+    "mat-calendar"
+  ],
+  "license": "MIT",
+  "author": "Olivier Petitjean",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/olivierpetitjean/ngx-dual-rangepicker.git"
+  },
+  "peerDependencies": {
+    "@angular/common": "^20.0.0",
+    "@angular/core": "^20.0.0",
+    "@angular/forms": "^20.0.0",
+    "@angular/cdk": "^20.0.0",
+    "@angular/material": "^20.0.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false
+}

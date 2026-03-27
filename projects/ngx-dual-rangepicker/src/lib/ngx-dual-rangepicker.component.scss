@@ -1,0 +1,20 @@
+:host {
+  display: inline-block;
+}
+
+.drp-trigger-field {
+  width: 100%;
+  min-width: 280px;
+  cursor: pointer;
+
+  // Make the readonly input look clickable
+  input {
+    cursor: pointer;
+  }
+
+  // Show primary-coloured outline when the picker panel is open (mimics focused state)
+  &.drp-trigger-open {
+    --mdc-outlined-text-field-outline-color: var(--mat-sys-primary);
+    --mdc-outlined-text-field-hover-outline-color: var(--mat-sys-primary);
+  }
+}

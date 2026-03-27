@@ -1,0 +1,101 @@
+<div
+  class="drp-panel"
+  [class.drp-layout-horizontal]="layout() === 'horizontal'"
+  [class.drp-layout-vertical]="layout() === 'vertical'"
+  cdkTrapFocus
+  [cdkTrapFocusAutoCapture]="true"
+>
+  <!-- ── Preset panel (left sidebar in horizontal, chips in vertical) ────── -->
+  @if (showPresets()) {
+    <mat-nav-list class="drp-presets" dense>
+      @for (preset of presets(); track preset.label) {
+        <mat-list-item
+          [activated]="selectedPresetLabel() === preset.label"
+          (click)="onPresetClick(preset)"
+        >
+          <span matListItemTitle>{{ preset.label }}</span>
+        </mat-list-item>
+      }
+    </mat-nav-list>
+  }
+
+  <!-- ── Main content ───────────────────────────────────────────────────── -->
+  <div class="drp-main">
+
+    <!-- Mode selector -->
+    @if (showModeSelector()) {
+      <div class="drp-mode-selector">
+        <mat-button-toggle-group
+          [value]="activeMode()"
+          (change)="onModeChange($event.value)"
+          hideSingleSelectionIndicator
+        >
+          <mat-button-toggle value="date">{{ intl.daysLabel }}</mat-button-toggle>
+          <mat-button-toggle value="month">{{ intl.monthsLabel }}</mat-button-toggle>
+          <mat-button-toggle value="year">{{ intl.yearsLabel }}</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    }
+
+    <!-- ── Date mode: custom day range view ─────────────────────────────── -->
+    @if (activeMode() === 'date') {
+      <div class="drp-calendars">
+        <ngx-day-range-view
+          [min]="min()"
+          [max]="max()"
+          [leftMonth]="leftMonth()"
+          (leftMonthChange)="leftMonth.set($event)"
+          (rangeSelected)="onDayRangeSelected($event)"
+        />
+      </div>
+    }
+
+    <!-- ── Month mode ────────────────────────────────────────────────────── -->
+    @if (activeMode() === 'month') {
+      <div class="drp-custom-view">
+        <ngx-month-range-view
+          [min]="min()"
+          [max]="max()"
+          (rangeSelected)="onMonthRangeSelected($event)"
+        />
+      </div>
+    }
+
+    <!-- ── Year mode ─────────────────────────────────────────────────────── -->
+    @if (activeMode() === 'year') {
+      <div class="drp-custom-view">
+        <ngx-year-range-view
+          [min]="min()"
+          [max]="max()"
+          (rangeSelected)="onYearRangeSelected($event)"
+        />
+      </div>
+    }
+
+    <!-- ── Time picker (date mode only) ─────────────────────────────────── -->
+    @if (showTimePicker()) {
+      <mat-divider />
+      <ngx-time-picker
+        [(startTime)]="startTime"
+        [(endTime)]="endTime"
+        [sameDay]="isSameDay()"
+      />
+    }
+
+    <!-- ── Actions ────────────────────────────────────────────────────────── -->
+    <mat-divider />
+    <div class="drp-actions">
+      <button mat-button type="button" (click)="onCancel()">
+        {{ intl.cancelLabel }}
+      </button>
+      <button
+        mat-flat-button
+        type="button"
+        [disabled]="!canApply()"
+        (click)="onApply()"
+      >
+        {{ intl.applyLabel }}
+      </button>
+    </div>
+  </div>
+</div>

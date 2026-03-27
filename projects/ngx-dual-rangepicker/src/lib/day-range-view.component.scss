@@ -1,0 +1,129 @@
+:host {
+  display: block;
+}
+
+.drp-day-range-view {
+  display: flex;
+  gap: var(--drp-calendar-gap, 16px);
+}
+
+.drp-day-panel {
+  flex: 1;
+  min-width: 200px;
+}
+
+.drp-day-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding: 0 4px;
+}
+
+.drp-panel-month-label {
+  font-weight: 500;
+  font-size: 0.9375rem;
+  color: var(--mat-sys-on-surface);
+}
+
+.drp-nav-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--mat-sys-on-surface-variant);
+  transition: background-color 0.15s;
+
+  &:hover {
+    background-color: var(--mat-sys-surface-variant);
+  }
+}
+
+.drp-day-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.drp-weekday-row {
+  display: flex;
+  margin-bottom: 4px;
+}
+
+.drp-weekday-cell {
+  flex: 1;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--mat-sys-on-surface-variant);
+  font-weight: 500;
+  padding: 2px 0;
+}
+
+.drp-day-row {
+  display: flex;
+}
+
+.drp-day-cell {
+  flex: 1;
+  height: 36px;
+  border: none;
+  border-radius: 18px;
+  cursor: pointer;
+  font-size: 0.8125rem;
+  font-family: inherit;
+  background: transparent;
+  color: var(--mat-sys-on-surface);
+  transition: background-color 0.15s;
+
+  &:hover:not(:disabled) {
+    background-color: var(--mat-sys-surface-variant);
+  }
+
+  &:disabled {
+    color: var(--mat-sys-on-surface);
+    opacity: 0.38;
+    cursor: default;
+  }
+
+  &.drp-day-empty {
+    pointer-events: none;
+  }
+
+  &.drp-range-start,
+  &.drp-range-end {
+    background-color: var(--mat-sys-primary);
+    color: var(--mat-sys-on-primary);
+    border-radius: 18px;
+  }
+
+  &.drp-in-range {
+    background-color: var(--mat-sys-primary-container);
+    color: var(--mat-sys-on-primary-container);
+    border-radius: 0;
+  }
+
+  &.drp-preview {
+    background-color: var(--mat-sys-secondary-container);
+    color: var(--mat-sys-on-secondary-container);
+    border-radius: 0;
+  }
+}
+
+// Round the edges of in-range / preview cells at start/end of each row
+.drp-day-row .drp-day-cell:first-child.drp-in-range,
+.drp-day-row .drp-day-cell:first-child.drp-preview {
+  border-top-left-radius: 18px;
+  border-bottom-left-radius: 18px;
+}
+
+.drp-day-row .drp-day-cell:last-child.drp-in-range,
+.drp-day-row .drp-day-cell:last-child.drp-preview {
+  border-top-right-radius: 18px;
+  border-bottom-right-radius: 18px;
+}

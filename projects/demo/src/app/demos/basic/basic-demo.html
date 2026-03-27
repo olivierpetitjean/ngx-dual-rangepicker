@@ -1,0 +1,26 @@
+<h1 class="demo-page-title">Basic usage</h1>
+<p class="demo-page-subtitle">
+  The simplest integration — two-way binding with <code>ngModel</code>.
+  Default presets and mode selector are shown automatically.
+</p>
+
+<!-- Live demo -->
+<section class="demo-section">
+  <h2 class="demo-section-title">Live demo</h2>
+  <div class="demo-box">
+    <ngx-dual-rangepicker
+      placeholder="Select a date range"
+      [(ngModel)]="result"
+    />
+  </div>
+  @if (result) {
+    <pre class="demo-json">{{ result | json }}</pre>
+  }
+</section>
+
+<!-- Code -->
+<section class="demo-section">
+  <h2 class="demo-section-title">Code</h2>
+  <app-code-snippet label="HTML" [code]="snippetHtml" />
+  <app-code-snippet label="TypeScript" [code]="snippetTs" />
+</section>

@@ -1,0 +1,55 @@
+// ngx-dual-rangepicker — SCSS theme mixins
+// Usage in the consuming application:
+//
+//   @use 'ngx-dual-rangepicker' as drp;
+//   @include drp.theme($my-theme);
+//
+// Or granularly:
+//   @include drp.color($my-theme);
+//   @include drp.typography($my-theme);
+//   @include drp.density($my-theme);
+
+@use '@angular/material' as mat;
+
+// ── Full theme mixin ─────────────────────────────────────────────────────────
+@mixin theme($theme) {
+  @include color($theme);
+  @include typography($theme);
+  @include density($theme);
+}
+
+// ── Color ────────────────────────────────────────────────────────────────────
+// All colors are sourced from Material system tokens via CSS custom properties.
+// This mixin exists as an extension point — the component already inherits
+// Material tokens automatically when mat.theme() is applied globally.
+// Override specific tokens here if needed.
+@mixin color($theme) {
+  ngx-dual-rangepicker {
+    // Preset panel active state — defaults to primary-container
+    --drp-preset-active-bg: #{mat.get-theme-color($theme, primary, container)};
+    --drp-preset-active-color: #{mat.get-theme-color($theme, primary, on-container)};
+  }
+}
+
+// ── Typography ───────────────────────────────────────────────────────────────
+@mixin typography($theme) {
+  ngx-dual-rangepicker,
+  ngx-dual-calendar-panel {
+    font-family: #{mat.get-theme-typography($theme, body-medium, font-family)};
+    font-size: #{mat.get-theme-typography($theme, body-medium, font-size)};
+  }
+}
+
+// ── Density ──────────────────────────────────────────────────────────────────
+@mixin density($theme) {
+  $density: mat.get-theme-density($theme);
+
+  ngx-dual-rangepicker {
+    // Compact trigger height at higher density levels
+    @if $density < 0 {
+      .drp-trigger {
+        height: #{56px + ($density * 4px)};
+      }
+    }
+  }
+}

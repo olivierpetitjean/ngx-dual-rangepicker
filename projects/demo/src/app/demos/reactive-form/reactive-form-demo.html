@@ -1,0 +1,46 @@
+<h1 class="demo-page-title">Reactive forms</h1>
+<p class="demo-page-subtitle">
+  Use <code>FormControl</code> for full reactive-forms integration — validation,
+  disabled state, and programmatic reset all work out of the box via
+  <code>ControlValueAccessor</code>.
+</p>
+
+<!-- Live demo -->
+<section class="demo-section">
+  <h2 class="demo-section-title">Live demo</h2>
+
+  <div class="demo-controls">
+    <button mat-stroked-button (click)="toggleDisabled()">
+      {{ rangeControl.disabled ? 'Enable' : 'Disable' }}
+    </button>
+    <button mat-stroked-button (click)="reset()">Reset</button>
+    <span>
+      Status:
+      <strong>{{ rangeControl.status }}</strong>
+    </span>
+  </div>
+
+  <div class="demo-box">
+    <ngx-dual-rangepicker
+      placeholder="Select a date range"
+      [formControl]="rangeControl"
+    />
+  </div>
+
+  @if (rangeControl.invalid && rangeControl.touched) {
+    <p style="color: var(--mat-sys-error); margin: 8px 0 0;">
+      A date range is required.
+    </p>
+  }
+
+  @if (rangeControl.value) {
+    <pre class="demo-json">{{ rangeControl.value | json }}</pre>
+  }
+</section>
+
+<!-- Code -->
+<section class="demo-section">
+  <h2 class="demo-section-title">Code</h2>
+  <app-code-snippet label="HTML" [code]="snippetHtml" />
+  <app-code-snippet label="TypeScript" [code]="snippetTs" />
+</section>

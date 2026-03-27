@@ -1,0 +1,81 @@
+<div class="drp-month-range-view">
+  <!-- Left panel: year N -->
+  <div class="drp-month-panel">
+    <div class="drp-month-panel-header">
+      <button
+        class="drp-nav-btn"
+        type="button"
+        (click)="prevYear()"
+        aria-label="Previous year"
+      >
+        &#8249;
+      </button>
+      <span class="drp-panel-year">{{ leftYear() }}</span>
+    </div>
+    <div class="drp-month-grid" role="grid" aria-label="Select start or end month">
+      @for (row of leftRows(); track $index) {
+        <div class="drp-month-row" role="row">
+          @for (cell of row; track trackByMonth($index, cell)) {
+            <button
+              class="drp-month-cell"
+              [class.drp-range-start]="getCellState(cell) === 'range-start'"
+              [class.drp-range-end]="getCellState(cell) === 'range-end'"
+              [class.drp-in-range]="getCellState(cell) === 'in-range'"
+              [class.drp-preview]="getCellState(cell) === 'preview'"
+              [disabled]="cell.disabled"
+              [attr.aria-selected]="getCellState(cell) === 'range-start' || getCellState(cell) === 'range-end'"
+              [attr.aria-disabled]="cell.disabled"
+              role="gridcell"
+              type="button"
+              (click)="onCellClick(cell)"
+              (mouseenter)="onCellHover(cell)"
+              (mouseleave)="onCellHover(null)"
+            >
+              {{ cell.label }}
+            </button>
+          }
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Right panel: year N+1 -->
+  <div class="drp-month-panel">
+    <div class="drp-month-panel-header">
+      <span class="drp-panel-year">{{ rightYear() }}</span>
+      <button
+        class="drp-nav-btn"
+        type="button"
+        (click)="nextYear()"
+        aria-label="Next year"
+      >
+        &#8250;
+      </button>
+    </div>
+    <div class="drp-month-grid" role="grid" aria-label="Select start or end month">
+      @for (row of rightRows(); track $index) {
+        <div class="drp-month-row" role="row">
+          @for (cell of row; track trackByMonth($index, cell)) {
+            <button
+              class="drp-month-cell"
+              [class.drp-range-start]="getCellState(cell) === 'range-start'"
+              [class.drp-range-end]="getCellState(cell) === 'range-end'"
+              [class.drp-in-range]="getCellState(cell) === 'in-range'"
+              [class.drp-preview]="getCellState(cell) === 'preview'"
+              [disabled]="cell.disabled"
+              [attr.aria-selected]="getCellState(cell) === 'range-start' || getCellState(cell) === 'range-end'"
+              [attr.aria-disabled]="cell.disabled"
+              role="gridcell"
+              type="button"
+              (click)="onCellClick(cell)"
+              (mouseenter)="onCellHover(cell)"
+              (mouseleave)="onCellHover(null)"
+            >
+              {{ cell.label }}
+            </button>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</div>

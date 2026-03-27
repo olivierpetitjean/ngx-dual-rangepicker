@@ -1,0 +1,38 @@
+<h1 class="demo-page-title">Month &amp; Year mode</h1>
+<p class="demo-page-subtitle">
+  Switch the granularity with <code>selectionMode</code>: pick whole months or
+  whole years instead of individual days. The selection returns the first day of
+  the start period and the last day of the end period.
+</p>
+
+<!-- Month -->
+<section class="demo-section">
+  <h2 class="demo-section-title">Month mode — <code>selectionMode="month"</code></h2>
+  <div class="demo-box">
+    <ngx-dual-rangepicker
+      selectionMode="month"
+      placeholder="Select a month range"
+      [(ngModel)]="monthResult"
+    />
+  </div>
+  @if (monthResult) {
+    <pre class="demo-json">{{ monthResult | json }}</pre>
+  }
+  <app-code-snippet label="HTML" [code]="snippetMonth" />
+</section>
+
+<!-- Year -->
+<section class="demo-section">
+  <h2 class="demo-section-title">Year mode — <code>selectionMode="year"</code></h2>
+  <div class="demo-box">
+    <ngx-dual-rangepicker
+      selectionMode="year"
+      placeholder="Select a year range"
+      [(ngModel)]="yearResult"
+    />
+  </div>
+  @if (yearResult) {
+    <pre class="demo-json">{{ yearResult | json }}</pre>
+  }
+  <app-code-snippet label="HTML" [code]="snippetYear" />
+</section>

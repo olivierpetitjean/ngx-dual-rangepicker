@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(npm --version)",
+      "Bash(npx -y @angular/cli version)",
+      "Bash(npx @angular/cli new ngx-dual-rangepicker-workspace --no-create-application --package-manager=npm --skip-git)",
+      "Bash(npx ng:*)",
+      "Bash(ng build:*)",
+      "Bash(ng test:*)",
+      "Bash(npm install:*)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(netstat -ano)"
+    ]
+  }
+}

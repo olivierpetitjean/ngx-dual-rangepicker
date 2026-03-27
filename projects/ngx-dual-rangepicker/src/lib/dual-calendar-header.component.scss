@@ -1,0 +1,22 @@
+:host {
+  display: block;
+}
+
+.drp-calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 0;
+}
+
+.drp-header-label {
+  font-weight: 500;
+  font-size: 0.9375rem;
+  color: var(--mat-sys-on-surface);
+  flex: 1;
+  text-align: center;
+}
+
+.drp-header-arrow {
+  color: var(--mat-sys-on-surface-variant);
+}
