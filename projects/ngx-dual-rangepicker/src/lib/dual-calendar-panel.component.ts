@@ -63,6 +63,7 @@ export class DualCalendarPanelComponent implements OnInit {
   readonly showModeSelector = input<boolean>(true);
   readonly showPresets = input<boolean>(true);
   readonly layout = input<'auto' | 'horizontal' | 'vertical'>('auto');
+  readonly mobile = input<boolean>(false);
   readonly initialRange = input<DateRange<Date> | null>(null);
 
   // ── Outputs ───────────────────────────────────────────────────────────────
@@ -77,9 +78,12 @@ export class DualCalendarPanelComponent implements OnInit {
     { initialValue: false },
   );
 
-  /** True when the panel should render in vertical mode (explicit or auto+narrow). */
+  /** True when the panel should render in vertical mode (mobile, explicit, or auto+narrow). */
   readonly isVertical = computed(
-    () => this.layout() === 'vertical' || (this.layout() === 'auto' && this.isNarrow()),
+    () =>
+      this.mobile() ||
+      this.layout() === 'vertical' ||
+      (this.layout() === 'auto' && this.isNarrow()),
   );
 
   // ── Internal state ────────────────────────────────────────────────────────

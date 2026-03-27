@@ -12,6 +12,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -25,6 +26,8 @@ import {
   ConnectedPosition,
   OverlayModule,
 } from '@angular/cdk/overlay';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { map } from 'rxjs';
 
 import { DualCalendarPanelComponent } from './dual-calendar-panel.component';
 import { DateRangePreset, DateRangeResult, PickerPosition, SelectionMode } from './date-range-picker.models';
@@ -85,6 +88,7 @@ export class NgxDualRangepickerComponent implements ControlValueAccessor, OnDest
   readonly lockedMode = input<SelectionMode | null>(null);
   readonly layout = input<'auto' | 'horizontal' | 'vertical'>('auto');
   readonly position = input<PickerPosition>('auto');
+  readonly enableMobile = input<boolean>(false);
 
   // ── Outputs ───────────────────────────────────────────────────────────────
   readonly rangeChanged = output<DateRangeResult>();
@@ -95,6 +99,21 @@ export class NgxDualRangepickerComponent implements ControlValueAccessor, OnDest
   readonly isOpen = signal(false);
   readonly currentRange = signal<DateRange<Date> | null>(null);
   readonly displayValue = signal<string>('');
+
+  private readonly isNarrow = toSignal(
+    inject(BreakpointObserver)
+      .observe('(max-width: 767px)')
+      .pipe(map(r => r.matches)),
+    { initialValue: false },
+  );
+
+  /** True when the mobile full-screen mode is active. */
+  readonly isMobileActive = computed(() => this.enableMobile() && this.isNarrow());
+
+  /** CDK overlay panel class — adds drp-overlay-mobile for full-screen on mobile. */
+  readonly overlayPanelClass = computed<string>(() =>
+    this.isMobileActive() ? 'drp-overlay-mobile' : '',
+  );
 
   readonly overlayPositions = computed<ConnectedPosition[]>(() => {
     const pos = this.position();

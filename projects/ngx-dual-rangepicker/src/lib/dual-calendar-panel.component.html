@@ -1,7 +1,8 @@
 <div
   class="drp-panel"
   [class.drp-layout-horizontal]="layout() === 'horizontal'"
-  [class.drp-layout-vertical]="isVertical()"
+  [class.drp-layout-vertical]="isVertical() && !mobile()"
+  [class.drp-layout-mobile]="mobile()"
   cdkTrapFocus
   [cdkTrapFocusAutoCapture]="true"
 >
