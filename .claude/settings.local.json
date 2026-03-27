@@ -12,7 +12,8 @@
       "mcp__Claude_Preview__preview_start",
       "Bash(netstat -ano)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(npx tsc:*)"
     ]
   }
 }
