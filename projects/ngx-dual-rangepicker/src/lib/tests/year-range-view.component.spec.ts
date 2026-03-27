@@ -35,15 +35,17 @@ describe('YearRangeViewComponent', () => {
     expect(rightFirst).toBe(leftLast + 1);
   });
 
-  it('prevPage() should go back 12 years', () => {
+  it('prevLeftPage() should go back 12 years', () => {
     const before = component.leftPageStart();
-    component.prevPage();
+    component.prevLeftPage();
     expect(component.leftPageStart()).toBe(before - 12);
   });
 
-  it('nextPage() should advance 12 years', () => {
+  it('nextLeftPage() should advance 12 years when room exists', () => {
+    // Open a gap: advance right page first so left can advance too
+    component.nextRightPage();
     const before = component.leftPageStart();
-    component.nextPage();
+    component.nextLeftPage();
     expect(component.leftPageStart()).toBe(before + 12);
   });
 

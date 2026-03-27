@@ -37,16 +37,21 @@ describe('MonthRangeViewComponent', () => {
     expect(component.rightYear()).toBe(leftYear + 1);
   });
 
-  it('prevYear() should decrement left year', () => {
+  it('prevLeftYear() should decrement left year', () => {
     const before = component.leftYear();
-    component.prevYear();
+    component.prevLeftYear();
     expect(component.leftYear()).toBe(before - 1);
   });
 
-  it('nextYear() should increment left year', () => {
+  it('nextLeftYear() should increment left year (if room before right)', () => {
     const before = component.leftYear();
-    component.nextYear();
-    expect(component.leftYear()).toBe(before + 1);
+    component.nextLeftYear();
+    // Only increments if leftYear + 1 < rightYear
+    if (before + 1 < component.rightYear()) {
+      expect(component.leftYear()).toBe(before + 1);
+    } else {
+      expect(component.leftYear()).toBe(before);
+    }
   });
 
   describe('selection', () => {

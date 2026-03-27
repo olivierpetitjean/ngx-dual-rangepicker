@@ -17,6 +17,10 @@
     "publish:lib": "cd build/ngx-dual-rangepicker && npm publish",
     "publish:lib:dry": "cd build/ngx-dual-rangepicker && npm publish --dry-run"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/olivierpetitjean/ngx-dual-rangepicker.git"
+  },
   "prettier": {
     "printWidth": 100,
     "singleQuote": true,

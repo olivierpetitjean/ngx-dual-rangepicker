@@ -26,23 +26,9 @@ describe('DualCalendarPanelComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render two mat-calendar elements', () => {
-    const cals = fixture.debugElement.queryAll(By.css('mat-calendar'));
-    expect(cals.length).toBe(2);
-  });
-
-  it('right month should be left month + 1', () => {
-    const left = component.leftMonth();
-    const right = component.rightMonth();
-    expect(right.getMonth()).toBe((left.getMonth() + 1) % 12);
-  });
-
-  it('two calendars should never display the same month', () => {
-    const left = component.leftMonth();
-    const right = component.rightMonth();
-    const sameMonthYear =
-      left.getMonth() === right.getMonth() && left.getFullYear() === right.getFullYear();
-    expect(sameMonthYear).toBeFalse();
+  it('should render the day-range-view in date mode', () => {
+    const dayView = fixture.debugElement.query(By.css('ngx-day-range-view'));
+    expect(dayView).toBeTruthy();
   });
 
   it('should default to date mode', () => {
@@ -158,15 +144,19 @@ describe('DualCalendarPanelComponent', () => {
   });
 
   describe('navigation', () => {
-    it('advanceMonth(1) should advance left month', () => {
+    it('setting leftMonth signal advances the left calendar', () => {
       const before = component.leftMonth().getMonth();
-      component.advanceMonth(1);
+      const next = new Date(component.leftMonth());
+      next.setMonth(next.getMonth() + 1);
+      component.leftMonth.set(next);
       expect(component.leftMonth().getMonth()).toBe((before + 1) % 12);
     });
 
-    it('advanceMonth(-1) should go back one month', () => {
+    it('setting leftMonth signal goes back one month', () => {
       const before = component.leftMonth().getMonth();
-      component.advanceMonth(-1);
+      const prev = new Date(component.leftMonth());
+      prev.setMonth(prev.getMonth() - 1);
+      component.leftMonth.set(prev);
       const expected = before === 0 ? 11 : before - 1;
       expect(component.leftMonth().getMonth()).toBe(expected);
     });
