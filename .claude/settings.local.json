@@ -13,7 +13,9 @@
       "Bash(netstat -ano)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(npm test:*)",
+      "Bash(npm run:*)"
     ]
   }
 }
