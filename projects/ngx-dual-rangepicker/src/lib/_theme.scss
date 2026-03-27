@@ -1,7 +1,7 @@
 // ngx-dual-rangepicker — SCSS theme mixins
 // Usage in the consuming application:
 //
-//   @use 'ngx-dual-rangepicker' as drp;
+//   @use 'ngx-dual-rangepicker/src/lib/theme' as drp;
 //   @include drp.theme($my-theme);
 //
 // Or granularly:
@@ -19,15 +19,41 @@
 }
 
 // ── Color ────────────────────────────────────────────────────────────────────
-// All colors are sourced from Material system tokens via CSS custom properties.
-// This mixin exists as an extension point — the component already inherits
-// Material tokens automatically when mat.theme() is applied globally.
-// Override specific tokens here if needed.
+// Explicitly sets all --mat-sys-* tokens used by our components.
+// This ensures correct theming even when the consumer only calls
+// mat.all-component-themes() without separately configuring Material
+// system-level tokens.
 @mixin color($theme) {
-  ngx-dual-rangepicker {
-    // Preset panel active state — defaults to primary-container
-    --drp-preset-active-bg: #{mat.get-theme-color($theme, primary-container)};
+  // The panel (ngx-dual-calendar-panel) is the root of the CDK overlay content.
+  // Setting tokens here cascades to all child components (day/month/year views).
+  ngx-dual-calendar-panel {
+    // Surface & structure
+    --mat-sys-surface-container:      #{mat.get-theme-color($theme, surface-container)};
+    --mat-sys-surface-variant:        #{mat.get-theme-color($theme, surface-variant)};
+    --mat-sys-on-surface:             #{mat.get-theme-color($theme, on-surface)};
+    --mat-sys-on-surface-variant:     #{mat.get-theme-color($theme, on-surface-variant)};
+    --mat-sys-outline-variant:        #{mat.get-theme-color($theme, outline-variant)};
+
+    // Primary — range start/end cells
+    --mat-sys-primary:                #{mat.get-theme-color($theme, primary)};
+    --mat-sys-on-primary:             #{mat.get-theme-color($theme, on-primary)};
+
+    // Primary container — in-range cells
+    --mat-sys-primary-container:      #{mat.get-theme-color($theme, primary-container)};
+    --mat-sys-on-primary-container:   #{mat.get-theme-color($theme, on-primary-container)};
+
+    // Secondary container — hover preview cells
+    --mat-sys-secondary-container:    #{mat.get-theme-color($theme, secondary-container)};
+    --mat-sys-on-secondary-container: #{mat.get-theme-color($theme, on-secondary-container)};
+
+    // Preset active state
+    --drp-preset-active-bg:    #{mat.get-theme-color($theme, primary-container)};
     --drp-preset-active-color: #{mat.get-theme-color($theme, on-primary-container)};
+  }
+
+  // Trigger field (rendered outside the overlay)
+  ngx-dual-rangepicker {
+    --mat-sys-primary: #{mat.get-theme-color($theme, primary)};
   }
 }
 
