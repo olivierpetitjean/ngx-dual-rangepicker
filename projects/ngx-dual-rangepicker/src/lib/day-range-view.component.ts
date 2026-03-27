@@ -32,6 +32,7 @@ export class DayRangeViewComponent {
   readonly min = input<Date | null>(null);
   readonly max = input<Date | null>(null);
   readonly selectedRange = input<DateRange<Date | null> | null>(null);
+  readonly vertical = input<boolean>(false);
 
   readonly rangeSelected = output<DateRange<Date>>();
 

@@ -46,6 +46,7 @@
           [leftMonth]="leftMonth()"
           (leftMonthChange)="leftMonth.set($event)"
           [selectedRange]="selectedRange()"
+          [vertical]="layout() === 'vertical'"
           (rangeSelected)="onDayRangeSelected($event)"
         />
       </div>

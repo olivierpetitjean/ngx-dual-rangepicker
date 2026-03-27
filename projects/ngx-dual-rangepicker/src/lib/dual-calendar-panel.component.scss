@@ -2,30 +2,29 @@
 
 .drp-panel {
   display: flex;
+  flex-direction: row;
   background: var(--mat-sys-surface-container);
   border-radius: var(--drp-panel-border-radius, 12px);
   overflow: hidden;
   box-shadow: var(--mat-sys-level3);
 
-  // ── Default (auto = horizontal on wide screens) ─────────────────────────
-  flex-direction: row;
-
-  // ── Responsive: vertical on narrow viewports ────────────────────────────
+  // ── Auto (default): horizontal on wide, vertical on narrow ──────────────
   @media (max-width: 767px) {
     flex-direction: column;
 
     .drp-presets {
-      display: flex;
-      flex-direction: row;
-      overflow-x: auto;
-      border-right: none;
-      border-bottom: 1px solid var(--mat-sys-outline-variant);
-      width: 100%;
-      padding: 4px 0;
+      display: flex !important;
+      flex-direction: row !important;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      border-right: none !important;
+      border-bottom: 1px solid var(--mat-sys-outline-variant) !important;
+      width: 100% !important;
+      padding: 4px 0 !important;
     }
 
     .drp-calendars {
-      flex-direction: column;
+      flex-direction: column !important;
     }
   }
 
@@ -35,7 +34,9 @@
 
     .drp-presets {
       display: block !important;
+      flex-direction: unset !important;
       overflow-x: unset !important;
+      overflow-y: auto !important;
       border-right: 1px solid var(--mat-sys-outline-variant) !important;
       border-bottom: none !important;
       width: var(--drp-preset-width, 168px) !important;
@@ -46,18 +47,9 @@
     }
   }
 
-  // ── Forced vertical ──────────────────────────────────────────────────────
+  // ── Forced vertical: presets stay as sidebar, calendars stack ────────────
   &.drp-layout-vertical {
-    flex-direction: column !important;
-
-    .drp-presets {
-      display: flex !important;
-      flex-direction: row !important;
-      overflow-x: auto !important;
-      border-right: none !important;
-      border-bottom: 1px solid var(--mat-sys-outline-variant) !important;
-      width: 100% !important;
-    }
+    flex-direction: row !important;
 
     .drp-calendars {
       flex-direction: column !important;
@@ -116,4 +108,3 @@
   gap: 8px;
   padding-top: 4px;
 }
-

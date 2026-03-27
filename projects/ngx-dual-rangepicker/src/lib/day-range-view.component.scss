@@ -5,11 +5,16 @@
 .drp-day-range-view {
   display: flex;
   gap: var(--drp-calendar-gap, 16px);
+
+  &--vertical {
+    flex-direction: column;
+  }
 }
 
 .drp-day-panel {
   flex: 1;
-  min-width: 200px;
+  min-width: 238px; // 7 × 34px min cell width
+  max-width: 320px;
 }
 
 .drp-day-panel-header {
@@ -53,7 +58,7 @@
 
 .drp-weekday-row {
   display: grid;
-  grid-template-columns: repeat(7, minmax(34px, 1fr));
+  grid-template-columns: repeat(7, minmax(34px, 40px));
   margin-bottom: 4px;
 }
 
@@ -67,7 +72,7 @@
 
 .drp-day-row {
   display: grid;
-  grid-template-columns: repeat(7, minmax(34px, 1fr));
+  grid-template-columns: repeat(7, minmax(34px, 40px));
 }
 
 .drp-day-cell {
