@@ -30,8 +30,7 @@ export class YearRangeViewComponent {
   readonly selectedRange = input<DateRange<Date | null> | null>(null);
   readonly vertical = input<boolean>(false);
 
-  /** Emitted when a complete year range has been selected. */
-  readonly rangeSelected = output<DateRange<Date>>();
+  readonly rangeSelected = output<DateRange<Date | null>>();
 
   /** Suit la sélection lors d'un preset ou d'une réouverture, mais peut être écrasé par la navigation. */
   readonly leftPageStart = linkedSignal<number>(() => {
@@ -115,6 +114,7 @@ export class YearRangeViewComponent {
     if (start === null || (start !== null && this.rangeEnd() !== null)) {
       this.rangeStart.set(cell.year);
       this.rangeEnd.set(null);
+      this.rangeSelected.emit(new DateRange<Date | null>(new Date(cell.year, 0, 1), null));
     } else {
       let s = start;
       let e = cell.year;

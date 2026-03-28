@@ -1,6 +1,6 @@
 {
   "name": "ngx-dual-rangepicker",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Dual calendar date range picker for Angular Material — with presets, month/year selection, and optional time picker",
   "keywords": [
     "angular",

@@ -34,7 +34,7 @@ export class DayRangeViewComponent {
   readonly selectedRange = input<DateRange<Date | null> | null>(null);
   readonly vertical = input<boolean>(false);
 
-  readonly rangeSelected = output<DateRange<Date>>();
+  readonly rangeSelected = output<DateRange<Date | null>>();
 
   readonly leftMonth = model<Date>(this.startOfCurrentMonth());
 
@@ -131,6 +131,7 @@ export class DayRangeViewComponent {
     if (!start || (start && this.rangeEnd())) {
       this.rangeStart.set(cell.date);
       this.rangeEnd.set(null);
+      this.rangeSelected.emit(new DateRange<Date | null>(cell.date, null));
     } else {
       let s = start;
       let e = cell.date;

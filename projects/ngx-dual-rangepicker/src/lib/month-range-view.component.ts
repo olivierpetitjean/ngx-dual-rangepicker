@@ -35,8 +35,7 @@ export class MonthRangeViewComponent {
   readonly selectedRange = input<DateRange<Date | null> | null>(null);
   readonly vertical = input<boolean>(false);
 
-  /** Emitted when a complete month range has been selected. */
-  readonly rangeSelected = output<DateRange<Date>>();
+  readonly rangeSelected = output<DateRange<Date | null>>();
 
   /** Suit la sélection lors d'un preset ou d'une réouverture, mais peut être écrasé par la navigation. */
   readonly leftYear = linkedSignal<number>(() => {
@@ -109,6 +108,7 @@ export class MonthRangeViewComponent {
       // First click — reset selection
       this.rangeStart.set({ year: cell.year, month: cell.month });
       this.rangeEnd.set(null);
+      this.rangeSelected.emit(new DateRange<Date | null>(new Date(cell.year, cell.month, 1), null));
     } else {
       // Second click — finalize range
       let s = start;

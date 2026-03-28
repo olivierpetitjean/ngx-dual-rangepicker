@@ -100,7 +100,7 @@ export class DualCalendarPanelComponent implements OnInit {
   /** Whether Apply button should be enabled. */
   readonly canApply = computed(() => {
     const r = this.selectedRange();
-    return r.start !== null && r.end !== null;
+    return r.start !== null;
   });
 
   readonly showTimePicker = computed(
@@ -124,19 +124,19 @@ export class DualCalendarPanelComponent implements OnInit {
 
   // ── Day-mode selection ────────────────────────────────────────────────────
 
-  onDayRangeSelected(range: DateRange<Date>): void {
+  onDayRangeSelected(range: DateRange<Date | null>): void {
     this.selectedRange.set(range);
     this.selectedPresetLabel.set(null);
   }
 
   // ── Month / Year custom views ─────────────────────────────────────────────
 
-  onMonthRangeSelected(range: DateRange<Date>): void {
+  onMonthRangeSelected(range: DateRange<Date | null>): void {
     this.selectedRange.set(range);
     this.selectedPresetLabel.set(null);
   }
 
-  onYearRangeSelected(range: DateRange<Date>): void {
+  onYearRangeSelected(range: DateRange<Date | null>): void {
     this.selectedRange.set(range);
     this.selectedPresetLabel.set(null);
   }
@@ -162,13 +162,26 @@ export class DualCalendarPanelComponent implements OnInit {
 
   // ── Actions ───────────────────────────────────────────────────────────────
 
+  private singleSelectionEnd(start: Date): Date {
+    const mode = this.activeMode();
+    if (mode === 'month') {
+      const lastDay = this.dateAdapter.getNumDaysInMonth(start);
+      return this.dateAdapter.createDate(start.getFullYear(), start.getMonth(), lastDay);
+    }
+    if (mode === 'year') {
+      return this.dateAdapter.createDate(start.getFullYear(), 11, 31);
+    }
+    return start;
+  }
+
   onApply(): void {
     const range = this.selectedRange();
-    if (!range.start || !range.end) return;
+    if (!range.start) return;
 
+    const end = range.end ?? this.singleSelectionEnd(range.start);
     const result: DateRangeResult = {
       start: this.mergeTime(range.start, this.startTime()),
-      end: this.mergeTime(range.end, this.endTime()),
+      end: this.mergeTime(end, this.endTime()),
     };
 
     if (this.showTimePicker()) {
