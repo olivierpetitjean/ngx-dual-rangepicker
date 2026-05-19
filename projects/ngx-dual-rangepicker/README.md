@@ -95,7 +95,7 @@ export class MyComponent {
 | `minCalendarDays` | `number \| null` | `null` | Minimum inclusive calendar days in a selected range |
 | `maxCalendarDays` | `number \| null` | `null` | Maximum inclusive calendar days in a selected range |
 | `dateFormat` | `string` | `'mediumDate'` | Angular date format used in the trigger display |
-| `placeholder` | `string` | `'Select a date range'` | Text shown when no range is selected |
+| `placeholder` | `string` | `'Select a date range'` | Trigger label text; omitted values use the default, empty or whitespace-only values hide the label |
 | `disabled` | `boolean` | `false` | Disable the component; CVA compatible |
 | `required` | `boolean` | `false` | Mark the trigger as required |
 | `showModeSelector` | `boolean` | `true` | Show / hide the day/month/year toggle |
