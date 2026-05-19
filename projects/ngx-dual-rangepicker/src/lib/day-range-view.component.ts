@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { DateAdapter } from '@angular/material/core';
 import { DateRange } from '@angular/material/datepicker';
+import { isCalendarDayRangeValid } from './calendar-day-range.utils';
 
 export interface DayCell {
   date: Date;
@@ -31,6 +32,8 @@ export class DayRangeViewComponent {
 
   readonly min = input<Date | null>(null);
   readonly max = input<Date | null>(null);
+  readonly minCalendarDays = input<number | null>(null);
+  readonly maxCalendarDays = input<number | null>(null);
   readonly selectedRange = input<DateRange<Date | null> | null>(null);
   readonly vertical = input<boolean>(false);
 
@@ -121,6 +124,7 @@ export class DayRangeViewComponent {
     const max = this.max();
     if (min && this.dateAdapter.compareDate(date, min) < 0) return true;
     if (max && this.dateAdapter.compareDate(date, max) > 0) return true;
+    if (!this.isRangeEndCandidateEnabled(date)) return true;
     return false;
   }
 
@@ -133,6 +137,8 @@ export class DayRangeViewComponent {
       this.rangeEnd.set(null);
       this.rangeSelected.emit(new DateRange<Date | null>(cell.date, null));
     } else {
+      if (!this.isRangeEndCandidateEnabled(cell.date)) return;
+
       let s = start;
       let e = cell.date;
       if (this.dateAdapter.compareDate(e, s) < 0) [s, e] = [e, s];
@@ -141,6 +147,24 @@ export class DayRangeViewComponent {
       this.hoverDate.set(null);
       this.rangeSelected.emit(new DateRange(s, e));
     }
+  }
+
+  private isRangeEndCandidateEnabled(date: Date): boolean {
+    const start = this.rangeStart();
+    if (!start || this.rangeEnd()) return true;
+    if (this.dateAdapter.sameDate(start, date)) {
+      const minCalendarDays = this.minCalendarDays();
+      return minCalendarDays === null || minCalendarDays <= 1;
+    }
+
+    let s = start;
+    let e = date;
+    if (this.dateAdapter.compareDate(e, s) < 0) [s, e] = [e, s];
+
+    return isCalendarDayRangeValid(s, e, {
+      min: this.minCalendarDays(),
+      max: this.maxCalendarDays(),
+    });
   }
 
   onCellHover(cell: DayCell | null): void {

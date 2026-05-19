@@ -69,6 +69,48 @@ describe('DualCalendarPanelComponent', () => {
     expect(component.canApply()).toBeTrue();
   });
 
+  it('should disable Apply when a selected range is shorter than minCalendarDays', () => {
+    fixture.componentRef.setInput('minCalendarDays', 5);
+    component.selectedRange.set(new DateRange(new Date(2024, 2, 10), new Date(2024, 2, 12)));
+
+    expect(component.canApply()).toBeFalse();
+  });
+
+  it('should disable Apply when a selected range is longer than maxCalendarDays', () => {
+    fixture.componentRef.setInput('maxCalendarDays', 5);
+    component.selectedRange.set(new DateRange(new Date(2024, 2, 10), new Date(2024, 2, 20)));
+
+    expect(component.canApply()).toBeFalse();
+  });
+
+  it('should allow calendar day constraints when the selected range length is valid', () => {
+    fixture.componentRef.setInput('minCalendarDays', 5);
+    fixture.componentRef.setInput('maxCalendarDays', 7);
+    component.selectedRange.set(new DateRange(new Date(2024, 2, 10), new Date(2024, 2, 14)));
+
+    expect(component.canApply()).toBeTrue();
+  });
+
+  it('should ignore calendar day constraints when the time picker is enabled', () => {
+    fixture.componentRef.setInput('enableTimePicker', true);
+    fixture.componentRef.setInput('minCalendarDays', 5);
+    component.selectedRange.set(new DateRange(new Date(2024, 2, 10), new Date(2024, 2, 10)));
+
+    expect(component.canApply()).toBeTrue();
+  });
+
+  it('should ignore calendar day constraints when minCalendarDays is greater than maxCalendarDays', () => {
+    spyOn(console, 'warn');
+    fixture.componentRef.setInput('minCalendarDays', 10);
+    fixture.componentRef.setInput('maxCalendarDays', 2);
+    component.selectedRange.set(new DateRange(new Date(2024, 2, 10), new Date(2024, 2, 10)));
+
+    expect(component.canApply()).toBeTrue();
+    expect(console.warn).toHaveBeenCalledWith(
+      '[ngx-dual-rangepicker] minCalendarDays cannot be greater than maxCalendarDays. Calendar day constraints are ignored.',
+    );
+  });
+
   it('should emit applied event on onApply() with complete range', () => {
     const emitted: any[] = [];
     component.applied.subscribe((r) => emitted.push(r));
@@ -157,6 +199,14 @@ describe('DualCalendarPanelComponent', () => {
       expect(component.isPresetDisabled(boundedPresets[0])).toBeFalse();
       expect(component.isPresetDisabled(boundedPresets[1])).toBeTrue();
       expect(component.isPresetDisabled(boundedPresets[2])).toBeTrue();
+    });
+
+    it('should disable presets outside calendar day constraints', () => {
+      fixture.componentRef.setInput('presets', boundedPresets);
+      fixture.componentRef.setInput('minCalendarDays', 20);
+      fixture.detectChanges();
+
+      expect(component.isPresetDisabled(boundedPresets[0])).toBeTrue();
     });
 
     it('should not select a disabled preset', () => {

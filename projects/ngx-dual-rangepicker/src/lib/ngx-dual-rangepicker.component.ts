@@ -83,6 +83,8 @@ export class NgxDualRangepickerComponent implements ControlValueAccessor, OnDest
   readonly presets = input<DateRangePreset[]>(DEFAULT_PRESETS);
   readonly min = input<Date | null>(null);
   readonly max = input<Date | null>(null);
+  readonly minCalendarDays = input<number | null>(null);
+  readonly maxCalendarDays = input<number | null>(null);
   readonly dateFormat = input<string>('mediumDate');
   readonly placeholder = input<string>('Select a date range');
   readonly disabled = input<boolean>(false);

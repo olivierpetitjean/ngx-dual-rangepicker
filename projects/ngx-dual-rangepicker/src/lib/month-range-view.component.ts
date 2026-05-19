@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { DateAdapter } from '@angular/material/core';
 import { DateRange } from '@angular/material/datepicker';
+import { isCalendarDayRangeValid } from './calendar-day-range.utils';
 
 export interface MonthCell {
   year: number;
@@ -32,6 +33,8 @@ export class MonthRangeViewComponent {
 
   readonly min = input<Date | null>(null);
   readonly max = input<Date | null>(null);
+  readonly minCalendarDays = input<number | null>(null);
+  readonly maxCalendarDays = input<number | null>(null);
   readonly selectedRange = input<DateRange<Date | null> | null>(null);
   readonly vertical = input<boolean>(false);
 
@@ -96,6 +99,7 @@ export class MonthRangeViewComponent {
     if (min && year === min.getFullYear() && month < min.getMonth()) return true;
     if (max && year > max.getFullYear()) return true;
     if (max && year === max.getFullYear() && month > max.getMonth()) return true;
+    if (!this.isRangeEndCandidateEnabled({ year, month })) return true;
     return false;
   }
 
@@ -110,6 +114,8 @@ export class MonthRangeViewComponent {
       this.rangeEnd.set(null);
       this.rangeSelected.emit(new DateRange<Date | null>(new Date(cell.year, cell.month, 1), null));
     } else {
+      if (!this.isRangeEndCandidateEnabled({ year: cell.year, month: cell.month })) return;
+
       // Second click — finalize range
       let s = start;
       let e = { year: cell.year, month: cell.month };
@@ -131,6 +137,34 @@ export class MonthRangeViewComponent {
       );
       this.rangeSelected.emit(new DateRange(rangeStart, rangeEnd));
     }
+  }
+
+  private isRangeEndCandidateEnabled(cell: { year: number; month: number }): boolean {
+    const start = this.rangeStart();
+    if (!start || this.rangeEnd()) return true;
+    return this.isRangeWithinCalendarDayConstraints(start, cell);
+  }
+
+  private isRangeWithinCalendarDayConstraints(
+    start: { year: number; month: number },
+    end: { year: number; month: number },
+  ): boolean {
+    let s = start;
+    let e = end;
+    if (this.compareCells(e, s) < 0) [s, e] = [e, s];
+
+    const rangeStart = this.dateAdapter.createDate(s.year, s.month, 1);
+    const endMonthStart = this.dateAdapter.createDate(e.year, e.month, 1);
+    const rangeEnd = this.dateAdapter.createDate(
+      e.year,
+      e.month,
+      this.dateAdapter.getNumDaysInMonth(endMonthStart),
+    );
+
+    return isCalendarDayRangeValid(rangeStart, rangeEnd, {
+      min: this.minCalendarDays(),
+      max: this.maxCalendarDays(),
+    });
   }
 
   onCellHover(cell: MonthCell | null): void {

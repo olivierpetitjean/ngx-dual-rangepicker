@@ -167,5 +167,16 @@ describe('MonthRangeViewComponent', () => {
       component.onCellClick(component.leftCells()[0]); // disabled Jan
       expect(emitted.length).toBe(0);
     });
+
+    it('should disable end-month candidates outside calendar day constraints', () => {
+      fixture.componentRef.setInput('maxCalendarDays', 31);
+      fixture.detectChanges();
+
+      component.onCellClick(component.leftCells()[0]); // Jan
+      fixture.detectChanges();
+
+      expect(component.leftCells()[0].disabled).toBeFalse();
+      expect(component.leftCells()[1].disabled).toBeTrue();
+    });
   });
 });

@@ -92,6 +92,8 @@ export class MyComponent {
 | `presets` | `DateRangePreset[]` | built-in 9 | Preset list shown in the sidebar |
 | `min` | `Date \| null` | `null` | Minimum selectable date |
 | `max` | `Date \| null` | `null` | Maximum selectable date |
+| `minCalendarDays` | `number \| null` | `null` | Minimum inclusive calendar days in a selected range |
+| `maxCalendarDays` | `number \| null` | `null` | Maximum inclusive calendar days in a selected range |
 | `dateFormat` | `string` | `'mediumDate'` | Angular date format used in the trigger display |
 | `placeholder` | `string` | `'Select a date range'` | Text shown when no range is selected |
 | `disabled` | `boolean` | `false` | Disable the component; CVA compatible |
@@ -130,6 +132,19 @@ mobile mode = enableMobile && viewport width <= 767px
 | `'bottom'` | Opens as a bottom sheet |
 
 `disableAnimations` only disables animations and transitions owned by this library. Angular Material animations still follow the application's Angular Material configuration.
+
+### Calendar day constraints
+
+`minCalendarDays` and `maxCalendarDays` constrain the number of inclusive calendar days in the selected range:
+
+```text
+Jan 1 -> Jan 1 = 1 calendar day
+Jan 1 -> Jan 2 = 2 calendar days
+```
+
+These constraints are ignored when `enableTimePicker` is `true`. Use duration-based constraints for time-aware ranges if they are added later.
+
+Invalid values (`0`, negative, decimals, `NaN`, `Infinity`) are ignored. If `minCalendarDays` is greater than `maxCalendarDays`, both constraints are ignored and a development warning is logged.
 
 ---
 

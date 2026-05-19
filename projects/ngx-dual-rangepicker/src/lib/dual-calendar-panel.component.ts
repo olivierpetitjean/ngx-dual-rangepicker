@@ -4,6 +4,7 @@ import {
   computed,
   inject,
   input,
+  isDevMode,
   OnInit,
   output,
   signal,
@@ -28,6 +29,12 @@ import { TimePickerComponent, TimeValue } from './time-picker.component';
 import { DateRangePreset, DateRangeResult, SelectionMode } from './date-range-picker.models';
 import { DEFAULT_PRESETS } from './date-range-picker.presets';
 import { DUAL_CALENDAR_INTL } from './date-range-picker.tokens';
+import {
+  CalendarDayRangeConstraints,
+  calendarDaysInclusive,
+  isCalendarDayRangeValid,
+  normalizeCalendarDayConstraint,
+} from './calendar-day-range.utils';
 
 @Component({
   selector: 'ngx-dual-calendar-panel',
@@ -60,6 +67,8 @@ export class DualCalendarPanelComponent implements OnInit {
   readonly presets = input<DateRangePreset[]>(DEFAULT_PRESETS);
   readonly min = input<Date | null>(null);
   readonly max = input<Date | null>(null);
+  readonly minCalendarDays = input<number | null>(null);
+  readonly maxCalendarDays = input<number | null>(null);
   readonly showModeSelector = input<boolean>(true);
   readonly showPresets = input<boolean>(true);
   readonly layout = input<'auto' | 'horizontal' | 'vertical'>('auto');
@@ -98,11 +107,16 @@ export class DualCalendarPanelComponent implements OnInit {
   readonly startTime = signal<TimeValue>({ hours: 0, minutes: 0 });
   readonly endTime = signal<TimeValue>({ hours: 23, minutes: 59 });
   readonly timePickerValid = signal(true);
+  private readonly warnedCalendarConstraintMessages = new Set<string>();
 
   /** Whether Apply button should be enabled. */
   readonly canApply = computed(() => {
     const r = this.selectedRange();
-    return r.start !== null && (!this.showTimePicker() || this.timePickerValid());
+    if (r.start === null) return false;
+    if (this.showTimePicker() && !this.timePickerValid()) return false;
+
+    const end = r.end ?? this.singleSelectionEnd(r.start);
+    return this.isRangeWithinCalendarDayConstraints(r.start, end);
   });
 
   readonly showTimePicker = computed(
@@ -113,6 +127,38 @@ export class DualCalendarPanelComponent implements OnInit {
     const r = this.selectedRange();
     if (!r.start || !r.end) return false;
     return this.dateAdapter.sameDate(r.start, r.end);
+  });
+
+  readonly calendarDayConstraints = computed<CalendarDayRangeConstraints>(() => {
+    if (this.enableTimePicker()) return { min: null, max: null };
+
+    const min = this.normalizeCalendarDayInput('minCalendarDays', this.minCalendarDays());
+    const max = this.normalizeCalendarDayInput('maxCalendarDays', this.maxCalendarDays());
+
+    if (min !== null && max !== null && min > max) {
+      this.warnCalendarConstraint(
+        'min-greater-than-max',
+        'minCalendarDays cannot be greater than maxCalendarDays. Calendar day constraints are ignored.',
+      );
+      return { min: null, max: null };
+    }
+
+    const minDate = this.min();
+    const maxDate = this.max();
+    if (
+      min !== null &&
+      minDate !== null &&
+      maxDate !== null &&
+      this.dateAdapter.compareDate(minDate, maxDate) <= 0 &&
+      calendarDaysInclusive(minDate, maxDate) < min
+    ) {
+      this.warnCalendarConstraint(
+        'min-exceeds-date-window',
+        'minCalendarDays is greater than the selectable min/max window. No valid range can be selected.',
+      );
+    }
+
+    return { min, max };
   });
 
   ngOnInit(): void {
@@ -153,6 +199,7 @@ export class DualCalendarPanelComponent implements OnInit {
     const max = this.max();
     if (min && this.dateAdapter.compareDate(range.start, min) < 0) return true;
     if (max && this.dateAdapter.compareDate(range.end, max) > 0) return true;
+    if (!this.isRangeWithinCalendarDayConstraints(range.start, range.end)) return true;
     return false;
   }
 
@@ -230,5 +277,26 @@ export class DualCalendarPanelComponent implements OnInit {
     const result = new Date(date);
     result.setHours(time.hours, time.minutes, 0, 0);
     return result;
+  }
+
+  private isRangeWithinCalendarDayConstraints(start: Date, end: Date): boolean {
+    return isCalendarDayRangeValid(start, end, this.calendarDayConstraints());
+  }
+
+  private normalizeCalendarDayInput(name: string, value: number | null): number | null {
+    const normalized = normalizeCalendarDayConstraint(value);
+    if (value !== null && normalized === null) {
+      this.warnCalendarConstraint(
+        `${name}-invalid-${String(value)}`,
+        `${name} must be a positive safe integer. The value is ignored.`,
+      );
+    }
+    return normalized;
+  }
+
+  private warnCalendarConstraint(key: string, message: string): void {
+    if (!isDevMode() || this.warnedCalendarConstraintMessages.has(key)) return;
+    this.warnedCalendarConstraintMessages.add(key);
+    console.warn(`[ngx-dual-rangepicker] ${message}`);
   }
 }

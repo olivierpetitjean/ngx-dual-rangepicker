@@ -8,6 +8,7 @@ import {
   signal,
 } from '@angular/core';
 import { DateRange } from '@angular/material/datepicker';
+import { isCalendarDayRangeValid } from './calendar-day-range.utils';
 
 export interface YearCell {
   year: number;
@@ -27,6 +28,8 @@ const YEARS_PER_PANEL = 12;
 export class YearRangeViewComponent {
   readonly min = input<Date | null>(null);
   readonly max = input<Date | null>(null);
+  readonly minCalendarDays = input<number | null>(null);
+  readonly maxCalendarDays = input<number | null>(null);
   readonly selectedRange = input<DateRange<Date | null> | null>(null);
   readonly vertical = input<boolean>(false);
 
@@ -103,6 +106,7 @@ export class YearRangeViewComponent {
     const max = this.max();
     if (min && year < min.getFullYear()) return true;
     if (max && year > max.getFullYear()) return true;
+    if (!this.isRangeEndCandidateEnabled(year)) return true;
     return false;
   }
 
@@ -116,6 +120,8 @@ export class YearRangeViewComponent {
       this.rangeEnd.set(null);
       this.rangeSelected.emit(new DateRange<Date | null>(new Date(cell.year, 0, 1), null));
     } else {
+      if (!this.isRangeEndCandidateEnabled(cell.year)) return;
+
       let s = start;
       let e = cell.year;
       if (e < s) [s, e] = [e, s];
@@ -128,6 +134,18 @@ export class YearRangeViewComponent {
         new DateRange(new Date(s, 0, 1), new Date(e, 11, 31)),
       );
     }
+  }
+
+  private isRangeEndCandidateEnabled(year: number): boolean {
+    const start = this.rangeStart();
+    if (start === null || this.rangeEnd() !== null) return true;
+
+    const s = Math.min(start, year);
+    const e = Math.max(start, year);
+    return isCalendarDayRangeValid(new Date(s, 0, 1), new Date(e, 11, 31), {
+      min: this.minCalendarDays(),
+      max: this.maxCalendarDays(),
+    });
   }
 
   onCellHover(cell: YearCell | null): void {

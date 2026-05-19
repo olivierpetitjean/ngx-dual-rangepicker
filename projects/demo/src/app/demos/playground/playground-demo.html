@@ -82,6 +82,32 @@
       </mat-form-field>
     </div>
 
+    <div class="pg-group">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" style="width:100%">
+        <mat-label>minCalendarDays</mat-label>
+        <input
+          matInput
+          type="number"
+          min="1"
+          [value]="minCalendarDays() ?? ''"
+          (input)="setMinCalendarDays($any($event.target).value)"
+        />
+      </mat-form-field>
+    </div>
+
+    <div class="pg-group">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" style="width:100%">
+        <mat-label>maxCalendarDays</mat-label>
+        <input
+          matInput
+          type="number"
+          min="1"
+          [value]="maxCalendarDays() ?? ''"
+          (input)="setMaxCalendarDays($any($event.target).value)"
+        />
+      </mat-form-field>
+    </div>
+
     <div class="pg-toggles">
       <mat-slide-toggle [checked]="enableTimePicker()" (change)="enableTimePicker.set($event.checked)">
         enableTimePicker
@@ -213,6 +239,8 @@
         [showModeSelector]="showModeSelector()"
         [layout]="layout()"
         [placeholder]="placeholder()"
+        [minCalendarDays]="minCalendarDays()"
+        [maxCalendarDays]="maxCalendarDays()"
         [disabled]="disabled()"
         [required]="required()"
         [disableAnimations]="disableAnimations()"

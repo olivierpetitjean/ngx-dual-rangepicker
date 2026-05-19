@@ -47,6 +47,8 @@
         <ngx-day-range-view
           [min]="min()"
           [max]="max()"
+          [minCalendarDays]="calendarDayConstraints().min"
+          [maxCalendarDays]="calendarDayConstraints().max"
           [leftMonth]="leftMonth()"
           (leftMonthChange)="leftMonth.set($event)"
           [selectedRange]="selectedRange()"
@@ -62,6 +64,8 @@
         <ngx-month-range-view
           [min]="min()"
           [max]="max()"
+          [minCalendarDays]="calendarDayConstraints().min"
+          [maxCalendarDays]="calendarDayConstraints().max"
           [selectedRange]="selectedRange()"
           [vertical]="isVertical()"
           (rangeSelected)="onMonthRangeSelected($event)"
@@ -75,6 +79,8 @@
         <ngx-year-range-view
           [min]="min()"
           [max]="max()"
+          [minCalendarDays]="calendarDayConstraints().min"
+          [maxCalendarDays]="calendarDayConstraints().max"
           [selectedRange]="selectedRange()"
           [vertical]="isVertical()"
           (rangeSelected)="onYearRangeSelected($event)"

@@ -62,6 +62,32 @@
         </mat-form-field>
       </div>
 
+      <div class="knob-group">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>minCalendarDays</mat-label>
+          <input
+            matInput
+            type="number"
+            min="1"
+            [value]="minCalendarDays() ?? ''"
+            (input)="setMinCalendarDays($any($event.target).value)"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="knob-group">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>maxCalendarDays</mat-label>
+          <input
+            matInput
+            type="number"
+            min="1"
+            [value]="maxCalendarDays() ?? ''"
+            (input)="setMaxCalendarDays($any($event.target).value)"
+          />
+        </mat-form-field>
+      </div>
+
       <mat-divider />
 
       <div class="knob-group knob-toggles">
@@ -101,6 +127,8 @@
           [showModeSelector]="showModeSelector()"
           [layout]="layout()"
           [placeholder]="placeholder()"
+          [minCalendarDays]="minCalendarDays()"
+          [maxCalendarDays]="maxCalendarDays()"
           [disabled]="disabled()"
           [required]="required()"
           [disableAnimations]="disableAnimations()"
@@ -209,6 +237,18 @@
           <td><code>string</code></td>
           <td><code>'mediumDate'</code></td>
           <td>Format Angular utilisé pour la valeur affichée dans le trigger</td>
+        </tr>
+        <tr>
+          <td><code>minCalendarDays</code></td>
+          <td><code>number | null</code></td>
+          <td><code>null</code></td>
+          <td>Nombre minimal de jours calendaires inclusifs, ignoré si le time picker est actif</td>
+        </tr>
+        <tr>
+          <td><code>maxCalendarDays</code></td>
+          <td><code>number | null</code></td>
+          <td><code>null</code></td>
+          <td>Nombre maximal de jours calendaires inclusifs, ignoré si le time picker est actif</td>
         </tr>
         <tr>
           <td><code>min</code></td>

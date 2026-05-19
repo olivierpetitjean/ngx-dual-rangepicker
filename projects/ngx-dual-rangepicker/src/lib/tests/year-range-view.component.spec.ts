@@ -170,5 +170,16 @@ describe('YearRangeViewComponent', () => {
       component.onCellClick(component.leftCells()[11]); // disabled
       expect(emitted.length).toBe(0);
     });
+
+    it('should disable end-year candidates outside calendar day constraints', () => {
+      fixture.componentRef.setInput('maxCalendarDays', 366);
+      fixture.detectChanges();
+
+      component.onCellClick(component.leftCells()[0]);
+      fixture.detectChanges();
+
+      expect(component.leftCells()[0].disabled).toBeFalse();
+      expect(component.leftCells()[1].disabled).toBeTrue();
+    });
   });
 });

@@ -43,6 +43,8 @@ export class ConfigDemoComponent {
   showModeSelector = signal(true);
   layout = signal<'auto' | 'horizontal' | 'vertical'>('auto');
   placeholder = signal('Select a date range');
+  minCalendarDays = signal<number | null>(null);
+  maxCalendarDays = signal<number | null>(null);
   disabled = signal(false);
   required = signal(false);
   disableAnimations = signal(false);
@@ -62,11 +64,28 @@ export class ConfigDemoComponent {
     if (this.layout() !== 'auto') attrs.push(`layout="${this.layout()}"`);
     if (this.placeholder() !== 'Select a date range')
       attrs.push(`placeholder="${this.placeholder()}"`);
+    if (this.minCalendarDays() !== null) attrs.push(`[minCalendarDays]="${this.minCalendarDays()}"`);
+    if (this.maxCalendarDays() !== null) attrs.push(`[maxCalendarDays]="${this.maxCalendarDays()}"`);
     if (this.disabled()) attrs.push(`[disabled]="true"`);
     if (this.required()) attrs.push(`[required]="true"`);
     if (this.disableAnimations()) attrs.push(`[disableAnimations]="true"`);
     attrs.push(`[(ngModel)]="result"`);
     const body = attrs.length ? '\n  ' + attrs.join('\n  ') + '\n' : '';
     return `<ngx-dual-rangepicker${body}/>`;
+  }
+
+  setMinCalendarDays(value: string): void {
+    this.minCalendarDays.set(this.toNullableNumber(value));
+  }
+
+  setMaxCalendarDays(value: string): void {
+    this.maxCalendarDays.set(this.toNullableNumber(value));
+  }
+
+  private toNullableNumber(value: string): number | null {
+    const trimmed = value.trim();
+    if (!trimmed) return null;
+    const parsed = Number(trimmed);
+    return Number.isFinite(parsed) ? parsed : null;
   }
 }
