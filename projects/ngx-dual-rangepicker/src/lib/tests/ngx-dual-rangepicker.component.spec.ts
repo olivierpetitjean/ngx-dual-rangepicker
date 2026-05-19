@@ -77,6 +77,13 @@ describe('NgxDualRangepickerComponent', () => {
     expect(component.backdropClass()).toContain('drp-disable-animations');
   });
 
+  it('should not render an empty material label when placeholder is blank', () => {
+    fixture.componentRef.setInput('placeholder', '   ');
+    fixture.detectChanges();
+
+    expect(fixture.debugElement.query(By.css('mat-label'))).toBeNull();
+  });
+
   it('Escape key should close the panel', () => {
     component.open();
     component.onOverlayKeydown(new KeyboardEvent('keydown', { key: 'Escape' }));

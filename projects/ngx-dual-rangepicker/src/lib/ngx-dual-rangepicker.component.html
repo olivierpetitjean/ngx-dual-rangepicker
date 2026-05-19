@@ -8,7 +8,9 @@
   #trigger="cdkOverlayOrigin"
   (click)="open()"
 >
-  <mat-label>{{ placeholder() }}</mat-label>
+  @if (placeholder().trim()) {
+    <mat-label>{{ placeholder() }}</mat-label>
+  }
   <mat-icon matPrefix>calendar_month</mat-icon>
   <input
     matInput
