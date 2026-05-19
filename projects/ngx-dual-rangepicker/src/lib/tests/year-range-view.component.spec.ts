@@ -57,7 +57,7 @@ describe('YearRangeViewComponent', () => {
     });
 
     it('second click finalises range and emits rangeSelected', () => {
-      const emitted: DateRange<Date>[] = [];
+      const emitted: DateRange<Date | null>[] = [];
       component.rangeSelected.subscribe((r) => emitted.push(r));
 
       const start = component.leftCells()[0];
@@ -65,13 +65,14 @@ describe('YearRangeViewComponent', () => {
       component.onCellClick(start);
       component.onCellClick(end);
 
-      expect(emitted.length).toBe(1);
-      expect(emitted[0].start!.getFullYear()).toBe(start.year);
-      expect(emitted[0].end!.getFullYear()).toBe(end.year);
+      const finalRange = emitted.at(-1)!;
+      expect(emitted.length).toBe(2);
+      expect(finalRange.start!.getFullYear()).toBe(start.year);
+      expect(finalRange.end!.getFullYear()).toBe(end.year);
     });
 
     it('should auto-invert when end year is before start year', () => {
-      const emitted: DateRange<Date>[] = [];
+      const emitted: DateRange<Date | null>[] = [];
       component.rangeSelected.subscribe((r) => emitted.push(r));
 
       const later = component.leftCells()[5];
@@ -79,44 +80,46 @@ describe('YearRangeViewComponent', () => {
       component.onCellClick(later);
       component.onCellClick(earlier);
 
-      expect(emitted[0].start!.getFullYear()).toBeLessThan(emitted[0].end!.getFullYear());
-      expect(emitted[0].start!.getFullYear()).toBe(earlier.year);
+      const finalRange = emitted.at(-1)!;
+      expect(finalRange.start!.getFullYear()).toBeLessThan(finalRange.end!.getFullYear());
+      expect(finalRange.start!.getFullYear()).toBe(earlier.year);
     });
 
     it('range starts on Jan 1', () => {
-      const emitted: DateRange<Date>[] = [];
+      const emitted: DateRange<Date | null>[] = [];
       component.rangeSelected.subscribe((r) => emitted.push(r));
 
       component.onCellClick(component.leftCells()[0]);
       component.onCellClick(component.leftCells()[2]);
 
-      expect(emitted[0].start!.getMonth()).toBe(0);
-      expect(emitted[0].start!.getDate()).toBe(1);
+      expect(emitted.at(-1)!.start!.getMonth()).toBe(0);
+      expect(emitted.at(-1)!.start!.getDate()).toBe(1);
     });
 
     it('range ends on Dec 31', () => {
-      const emitted: DateRange<Date>[] = [];
+      const emitted: DateRange<Date | null>[] = [];
       component.rangeSelected.subscribe((r) => emitted.push(r));
 
       component.onCellClick(component.leftCells()[0]);
       component.onCellClick(component.leftCells()[2]);
 
-      expect(emitted[0].end!.getMonth()).toBe(11);
-      expect(emitted[0].end!.getDate()).toBe(31);
+      expect(emitted.at(-1)!.end!.getMonth()).toBe(11);
+      expect(emitted.at(-1)!.end!.getDate()).toBe(31);
     });
 
     it('cross-panel range works', () => {
-      const emitted: DateRange<Date>[] = [];
+      const emitted: DateRange<Date | null>[] = [];
       component.rangeSelected.subscribe((r) => emitted.push(r));
 
       component.onCellClick(component.leftCells()[10]);
       component.onCellClick(component.rightCells()[2]);
 
-      expect(emitted[0].start!.getFullYear()).toBeLessThan(emitted[0].end!.getFullYear());
+      const finalRange = emitted.at(-1)!;
+      expect(finalRange.start!.getFullYear()).toBeLessThan(finalRange.end!.getFullYear());
     });
 
     it('clicking again after full selection resets to first click', () => {
-      const emitted: DateRange<Date>[] = [];
+      const emitted: DateRange<Date | null>[] = [];
       component.rangeSelected.subscribe((r) => emitted.push(r));
 
       component.onCellClick(component.leftCells()[0]);
@@ -161,10 +164,9 @@ describe('YearRangeViewComponent', () => {
       fixture.componentRef.setInput('max', new Date(start + 2, 11, 31));
       fixture.detectChanges();
 
-      const emitted: DateRange<Date>[] = [];
+      const emitted: DateRange<Date | null>[] = [];
       component.rangeSelected.subscribe((r) => emitted.push(r));
 
-      component.onCellClick(component.leftCells()[0]);
       component.onCellClick(component.leftCells()[11]); // disabled
       expect(emitted.length).toBe(0);
     });

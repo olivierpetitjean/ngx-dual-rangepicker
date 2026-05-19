@@ -12,6 +12,8 @@
       @for (preset of presets(); track preset.label) {
         <mat-list-item
           [activated]="selectedPresetLabel() === preset.label"
+          [disabled]="isPresetDisabled(preset)"
+          [class.drp-preset-disabled]="isPresetDisabled(preset)"
           (click)="onPresetClick(preset)"
         >
           <span matListItemTitle>{{ preset.label }}</span>

@@ -143,7 +143,20 @@ export class DualCalendarPanelComponent implements OnInit {
 
   // ── Presets ───────────────────────────────────────────────────────────────
 
+  isPresetDisabled(preset: DateRangePreset): boolean {
+    const range = preset.range();
+    if (!range.start || !range.end) return true;
+
+    const min = this.min();
+    const max = this.max();
+    if (min && this.dateAdapter.compareDate(range.start, min) < 0) return true;
+    if (max && this.dateAdapter.compareDate(range.end, max) > 0) return true;
+    return false;
+  }
+
   onPresetClick(preset: DateRangePreset): void {
+    if (this.isPresetDisabled(preset)) return;
+
     const range = preset.range();
     this.selectedRange.set(range);
     this.selectedPresetLabel.set(preset.label);

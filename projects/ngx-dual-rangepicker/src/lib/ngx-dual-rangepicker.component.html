@@ -14,7 +14,7 @@
     matInput
     readonly
     [value]="displayValue()"
-    [disabled]="disabled()"
+    [disabled]="isDisabled()"
     (keydown.enter)="open()"
     (keydown.space)="open()"
     role="combobox"
@@ -27,6 +27,7 @@
       mat-icon-button
       type="button"
       aria-label="Clear selection"
+      [disabled]="isDisabled()"
       (click)="$event.stopPropagation(); clearSelection()"
     >
       <mat-icon>close</mat-icon>

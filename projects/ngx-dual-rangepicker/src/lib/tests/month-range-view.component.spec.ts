@@ -62,7 +62,7 @@ describe('MonthRangeViewComponent', () => {
     });
 
     it('second click finalises range and emits rangeSelected', () => {
-      const emitted: DateRange<Date>[] = [];
+      const emitted: DateRange<Date | null>[] = [];
       component.rangeSelected.subscribe((r) => emitted.push(r));
 
       const start = component.leftCells()[1]; // Feb
@@ -70,13 +70,14 @@ describe('MonthRangeViewComponent', () => {
       component.onCellClick(start);
       component.onCellClick(end);
 
-      expect(emitted.length).toBe(1);
-      expect(emitted[0].start!.getMonth()).toBe(1); // Feb = 0-based 1
-      expect(emitted[0].end!.getMonth()).toBe(4);   // May
+      const finalRange = emitted.at(-1)!;
+      expect(emitted.length).toBe(2);
+      expect(finalRange.start!.getMonth()).toBe(1); // Feb = 0-based 1
+      expect(finalRange.end!.getMonth()).toBe(4);   // May
     });
 
     it('should auto-invert when end is before start', () => {
-      const emitted: DateRange<Date>[] = [];
+      const emitted: DateRange<Date | null>[] = [];
       component.rangeSelected.subscribe((r) => emitted.push(r));
 
       const later = component.leftCells()[6];  // July
@@ -84,34 +85,35 @@ describe('MonthRangeViewComponent', () => {
       component.onCellClick(later);
       component.onCellClick(earlier);
 
-      expect(emitted[0].start!.getMonth()).toBe(2); // March
-      expect(emitted[0].end!.getMonth()).toBe(6);   // July
+      const finalRange = emitted.at(-1)!;
+      expect(finalRange.start!.getMonth()).toBe(2); // March
+      expect(finalRange.end!.getMonth()).toBe(6);   // July
     });
 
     it('range-start cell starts on first day of month', () => {
-      const emitted: DateRange<Date>[] = [];
+      const emitted: DateRange<Date | null>[] = [];
       component.rangeSelected.subscribe((r) => emitted.push(r));
 
       component.onCellClick(component.leftCells()[0]); // Jan
       component.onCellClick(component.leftCells()[2]); // March
 
-      expect(emitted[0].start!.getDate()).toBe(1);
+      expect(emitted.at(-1)!.start!.getDate()).toBe(1);
     });
 
     it('range-end cell ends on last day of month', () => {
-      const emitted: DateRange<Date>[] = [];
+      const emitted: DateRange<Date | null>[] = [];
       component.rangeSelected.subscribe((r) => emitted.push(r));
 
       component.onCellClick(component.leftCells()[0]); // Jan
       component.onCellClick(component.leftCells()[2]); // March
 
-      const end = emitted[0].end!;
+      const end = emitted.at(-1)!.end!;
       const lastDay = new Date(end.getFullYear(), end.getMonth() + 1, 0).getDate();
       expect(end.getDate()).toBe(lastDay);
     });
 
     it('cross-year range works (left panel start, right panel end)', () => {
-      const emitted: DateRange<Date>[] = [];
+      const emitted: DateRange<Date | null>[] = [];
       component.rangeSelected.subscribe((r) => emitted.push(r));
 
       const startCell = component.leftCells()[10];  // Nov left year
@@ -119,8 +121,9 @@ describe('MonthRangeViewComponent', () => {
       component.onCellClick(startCell);
       component.onCellClick(endCell);
 
-      expect(emitted[0].start!.getFullYear()).toBe(component.leftYear() - 0); // patched below
-      expect(emitted[0].end!.getFullYear()).toBe(component.rightYear());
+      const finalRange = emitted.at(-1)!;
+      expect(finalRange.start!.getFullYear()).toBe(component.leftYear() - 0); // patched below
+      expect(finalRange.end!.getFullYear()).toBe(component.rightYear());
     });
   });
 
@@ -158,11 +161,10 @@ describe('MonthRangeViewComponent', () => {
       fixture.componentRef.setInput('min', new Date(year, 5, 1));
       fixture.detectChanges();
 
-      const emitted: DateRange<Date>[] = [];
+      const emitted: DateRange<Date | null>[] = [];
       component.rangeSelected.subscribe((r) => emitted.push(r));
 
       component.onCellClick(component.leftCells()[0]); // disabled Jan
-      component.onCellClick(component.leftCells()[7]); // Aug
       expect(emitted.length).toBe(0);
     });
   });

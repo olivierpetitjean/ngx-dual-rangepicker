@@ -175,7 +175,18 @@ describe('NgxDualRangepickerComponent — CVA with FormControl', () => {
     expect(pickerComp.displayValue()).toBeTruthy();
   });
 
-  it('setDisabledState should be callable without error', () => {
-    expect(() => host.ctrl.disable()).not.toThrow();
+  it('should disable the trigger and prevent opening when FormControl is disabled', () => {
+    const picker = fixture.debugElement.query(By.directive(NgxDualRangepickerComponent));
+    const pickerComp = picker.componentInstance as NgxDualRangepickerComponent;
+
+    host.ctrl.disable();
+    fixture.detectChanges();
+
+    pickerComp.open();
+    fixture.detectChanges();
+
+    const input = fixture.debugElement.query(By.css('input')).nativeElement as HTMLInputElement;
+    expect(input.disabled).toBeTrue();
+    expect(pickerComp.isOpen()).toBeFalse();
   });
 });

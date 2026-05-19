@@ -99,6 +99,8 @@ export class NgxDualRangepickerComponent implements ControlValueAccessor, OnDest
   readonly isOpen = signal(false);
   readonly currentRange = signal<DateRange<Date> | null>(null);
   readonly displayValue = signal<string>('');
+  private readonly cvaDisabled = signal(false);
+  readonly isDisabled = computed(() => this.disabled() || this.cvaDisabled());
 
   private readonly isNarrow = toSignal(
     inject(BreakpointObserver)
@@ -143,13 +145,16 @@ export class NgxDualRangepickerComponent implements ControlValueAccessor, OnDest
   }
 
   setDisabledState(isDisabled: boolean): void {
-    // handled via [disabled] input binding on the trigger
+    this.cvaDisabled.set(isDisabled);
+    if (isDisabled) {
+      this.isOpen.set(false);
+    }
   }
 
   // ── Overlay ───────────────────────────────────────────────────────────────
 
   open(): void {
-    if (this.disabled()) return;
+    if (this.isDisabled()) return;
     this.isOpen.set(true);
     this.opened.emit();
   }

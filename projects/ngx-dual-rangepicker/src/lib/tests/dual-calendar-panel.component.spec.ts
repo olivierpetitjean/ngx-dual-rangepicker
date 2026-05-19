@@ -6,6 +6,7 @@ import { By } from '@angular/platform-browser';
 
 import { DualCalendarPanelComponent } from '../dual-calendar-panel.component';
 import { DEFAULT_PRESETS } from '../date-range-picker.presets';
+import { DateRangePreset } from '../date-range-picker.models';
 
 describe('DualCalendarPanelComponent', () => {
   let fixture: ComponentFixture<DualCalendarPanelComponent>;
@@ -94,6 +95,21 @@ describe('DualCalendarPanelComponent', () => {
   });
 
   describe('presets', () => {
+    const boundedPresets: DateRangePreset[] = [
+      {
+        label: 'Inside range',
+        range: () => new DateRange(new Date(2024, 0, 10), new Date(2024, 0, 20)),
+      },
+      {
+        label: 'Before min',
+        range: () => new DateRange(new Date(2023, 11, 1), new Date(2023, 11, 31)),
+      },
+      {
+        label: 'After max',
+        range: () => new DateRange(new Date(2024, 2, 1), new Date(2024, 2, 31)),
+      },
+    ];
+
     it('should render 9 default presets', () => {
       const items = fixture.debugElement.queryAll(By.css('mat-list-item'));
       expect(items.length).toBe(9);
@@ -122,6 +138,40 @@ describe('DualCalendarPanelComponent', () => {
       component.onApply();
 
       expect(emitted[0].preset).toBe('Today');
+    });
+
+    it('should disable presets outside min and max dates', () => {
+      fixture.componentRef.setInput('presets', boundedPresets);
+      fixture.componentRef.setInput('min', new Date(2024, 0, 1));
+      fixture.componentRef.setInput('max', new Date(2024, 1, 29));
+      fixture.detectChanges();
+
+      expect(component.isPresetDisabled(boundedPresets[0])).toBeFalse();
+      expect(component.isPresetDisabled(boundedPresets[1])).toBeTrue();
+      expect(component.isPresetDisabled(boundedPresets[2])).toBeTrue();
+    });
+
+    it('should not select a disabled preset', () => {
+      fixture.componentRef.setInput('presets', boundedPresets);
+      fixture.componentRef.setInput('min', new Date(2024, 0, 1));
+      fixture.detectChanges();
+
+      component.onPresetClick(boundedPresets[1]);
+
+      expect(component.selectedPresetLabel()).toBeNull();
+      expect(component.selectedRange().start).toBeNull();
+      expect(component.selectedRange().end).toBeNull();
+    });
+
+    it('should mark disabled presets in the template', () => {
+      fixture.componentRef.setInput('presets', boundedPresets);
+      fixture.componentRef.setInput('min', new Date(2024, 0, 1));
+      fixture.detectChanges();
+
+      const items = fixture.debugElement.queryAll(By.css('mat-list-item'));
+      expect(items[0].nativeElement.classList).not.toContain('drp-preset-disabled');
+      expect(items[1].nativeElement.classList).toContain('drp-preset-disabled');
+      expect(items[1].nativeElement.classList).toContain('mdc-list-item--disabled');
     });
   });
 
