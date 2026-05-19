@@ -3,6 +3,7 @@
   [class.drp-layout-horizontal]="layout() === 'horizontal'"
   [class.drp-layout-vertical]="isVertical() && !mobile()"
   [class.drp-layout-mobile]="mobile()"
+  [class.drp-disable-animations]="disableAnimations()"
   cdkTrapFocus
   [cdkTrapFocusAutoCapture]="true"
 >
@@ -87,6 +88,7 @@
       <ngx-time-picker
         [(startTime)]="startTime"
         [(endTime)]="endTime"
+        [(timeValid)]="timePickerValid"
         [sameDay]="isSameDay()"
       />
     }

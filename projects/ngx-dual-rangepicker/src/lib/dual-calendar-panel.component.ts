@@ -64,6 +64,7 @@ export class DualCalendarPanelComponent implements OnInit {
   readonly showPresets = input<boolean>(true);
   readonly layout = input<'auto' | 'horizontal' | 'vertical'>('auto');
   readonly mobile = input<boolean>(false);
+  readonly disableAnimations = input<boolean>(false);
   readonly initialRange = input<DateRange<Date> | null>(null);
 
   // ── Outputs ───────────────────────────────────────────────────────────────
@@ -96,11 +97,12 @@ export class DualCalendarPanelComponent implements OnInit {
 
   readonly startTime = signal<TimeValue>({ hours: 0, minutes: 0 });
   readonly endTime = signal<TimeValue>({ hours: 23, minutes: 59 });
+  readonly timePickerValid = signal(true);
 
   /** Whether Apply button should be enabled. */
   readonly canApply = computed(() => {
     const r = this.selectedRange();
-    return r.start !== null;
+    return r.start !== null && (!this.showTimePicker() || this.timePickerValid());
   });
 
   readonly showTimePicker = computed(
@@ -189,7 +191,7 @@ export class DualCalendarPanelComponent implements OnInit {
 
   onApply(): void {
     const range = this.selectedRange();
-    if (!range.start) return;
+    if (!range.start || !this.canApply()) return;
 
     const end = range.end ?? this.singleSelectionEnd(range.start);
     const result: DateRangeResult = {

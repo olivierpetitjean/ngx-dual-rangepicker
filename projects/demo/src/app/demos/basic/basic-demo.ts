@@ -15,6 +15,8 @@ export class BasicDemoComponent {
 
   readonly snippetHtml = `<ngx-dual-rangepicker
   placeholder="Select a date range"
+  [enableMobile]="true"
+  mobilePanelPosition="left"
   [(ngModel)]="result"
 />`;
 

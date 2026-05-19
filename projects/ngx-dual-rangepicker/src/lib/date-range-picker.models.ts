@@ -6,6 +6,9 @@ export type SelectionMode = 'date' | 'month' | 'year';
 /** Overlay positioning strategy for the picker panel. */
 export type PickerPosition = 'auto' | 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end';
 
+/** Mobile panel placement used when `enableMobile` is active. */
+export type MobilePanelPosition = 'left' | 'right' | 'bottom' | 'fullscreen';
+
 /**
  * A preset that computes a date range dynamically.
  * The `range` function is called each time the preset is selected,

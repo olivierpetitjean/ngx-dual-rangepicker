@@ -36,6 +36,14 @@ describe('DualCalendarPanelComponent', () => {
     expect(component.activeMode()).toBe('date');
   });
 
+  it('should add the no-animation class when animations are disabled', () => {
+    fixture.componentRef.setInput('disableAnimations', true);
+    fixture.detectChanges();
+
+    const panel = fixture.debugElement.query(By.css('.drp-panel'));
+    expect(panel.nativeElement.classList).toContain('drp-disable-animations');
+  });
+
   it('should switch to month mode', () => {
     component.onModeChange('month');
     fixture.detectChanges();
@@ -190,6 +198,26 @@ describe('DualCalendarPanelComponent', () => {
       fixture.componentRef.setInput('enableTimePicker', true);
       component.onModeChange('month');
       expect(component.showTimePicker()).toBeFalse();
+    });
+
+    it('should disable Apply when the time picker is invalid', () => {
+      fixture.componentRef.setInput('enableTimePicker', true);
+      component.selectedRange.set(new DateRange(new Date(2024, 2, 10), new Date(2024, 2, 10)));
+      component.timePickerValid.set(false);
+
+      expect(component.canApply()).toBeFalse();
+    });
+
+    it('should not emit applied event when the time picker is invalid', () => {
+      const emitted: any[] = [];
+      component.applied.subscribe((r) => emitted.push(r));
+
+      fixture.componentRef.setInput('enableTimePicker', true);
+      component.selectedRange.set(new DateRange(new Date(2024, 2, 10), new Date(2024, 2, 10)));
+      component.timePickerValid.set(false);
+      component.onApply();
+
+      expect(emitted.length).toBe(0);
     });
   });
 

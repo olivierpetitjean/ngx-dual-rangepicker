@@ -1,7 +1,12 @@
 <mat-sidenav-container class="demo-container">
 
   <!-- ── Sidenav ───────────────────────────────────────────────────────────── -->
-  <mat-sidenav mode="side" opened class="demo-sidenav">
+  <mat-sidenav
+    [mode]="sidenavMode()"
+    [opened]="sidenavOpened()"
+    (openedChange)="onSidenavOpenedChange($event)"
+    class="demo-sidenav"
+  >
 
     <div class="demo-sidenav-logo">
       <mat-icon>event_note</mat-icon>
@@ -18,6 +23,7 @@
           [routerLink]="item.path"
           routerLinkActive="demo-nav-active"
           [routerLinkActiveOptions]="{ exact: false }"
+          (click)="closeSidenavOnMobile()"
         >
           <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
           <span matListItemTitle>{{ item.label }}</span>
@@ -31,6 +37,16 @@
   <mat-sidenav-content>
 
     <mat-toolbar class="demo-toolbar">
+      <button
+        mat-icon-button
+        type="button"
+        class="demo-menu-button"
+        aria-label="Open navigation"
+        (click)="toggleSidenav()"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="demo-toolbar-title">ngx-dual-rangepicker</span>
       <span class="demo-toolbar-spacer"></span>
       <a
         mat-icon-button

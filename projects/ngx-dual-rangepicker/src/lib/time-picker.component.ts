@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
 import { DUAL_CALENDAR_INTL } from './date-range-picker.tokens';
 
 export interface TimeValue {
@@ -20,7 +19,7 @@ export interface TimeValue {
 @Component({
   selector: 'ngx-time-picker',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatIconModule],
+  imports: [MatFormFieldModule, MatInputModule],
   templateUrl: './time-picker.component.html',
   styleUrl: './time-picker.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -31,11 +30,9 @@ export class TimePickerComponent implements OnInit {
   /** Whether both start and end fall on the same day (enables startTime <= endTime validation). */
   readonly sameDay = input<boolean>(false);
 
-  /** Use 12-hour format instead of 24-hour. */
-  readonly use12Hour = input<boolean>(false);
-
   readonly startTime = model<TimeValue>({ hours: 0, minutes: 0 });
   readonly endTime = model<TimeValue>({ hours: 23, minutes: 59 });
+  readonly timeValid = model<boolean>(true);
 
   startTimeDisplay = signal('00:00');
   endTimeDisplay = signal('23:59');
@@ -107,6 +104,7 @@ export class TimePickerComponent implements OnInit {
 
     this.startError.set(startErr);
     this.endError.set(endErr);
+    this.timeValid.set(!startErr && !endErr);
 
     if (!startErr && !endErr && startParsed && endParsed) {
       this.startTime.set(startParsed);
@@ -119,8 +117,7 @@ export class TimePickerComponent implements OnInit {
     if (!match) return null;
     const hours = parseInt(match[1], 10);
     const minutes = parseInt(match[2], 10);
-    const maxH = this.use12Hour() ? 12 : 23;
-    if (hours < 0 || hours > maxH || minutes < 0 || minutes > 59) return null;
+    if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) return null;
     return { hours, minutes };
   }
 

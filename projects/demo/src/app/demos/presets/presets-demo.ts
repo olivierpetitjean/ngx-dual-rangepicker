@@ -70,5 +70,9 @@ fiscalPresets: DateRangePreset[] = [
 ];`;
 
   readonly snippetNoPresets = `<!-- Hide the presets sidebar entirely -->
-<ngx-dual-rangepicker [showPresets]="false" />`;
+<ngx-dual-rangepicker
+  [showPresets]="false"
+  [enableMobile]="true"
+  mobilePanelPosition="left"
+/>`;
 }

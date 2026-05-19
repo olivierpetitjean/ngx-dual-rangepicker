@@ -57,6 +57,8 @@
 - **Built-in presets** (Today, This week, Last month, This quarter, …)
 - **Optional time picker** for start and end time
 - **Smart overlay positioning** — auto-fits to the viewport or use a forced position
+- **Opt-in mobile overlay** — fullscreen, side panel, or bottom sheet on small screens
+- **Internal animation control** — slide-in mobile panels, with an option to disable library animations
 - **Hover preview** highlights the candidate range as the user moves the cursor
 - **Fully accessible** — focus trap, `role="grid"`, `aria-selected`, keyboard navigation
 - **Angular Material M3** — styled with M3 tokens, dark mode included
@@ -127,16 +129,23 @@ export class MyComponent {
 
 | Input | Type | Default | Description |
 |---|---|---|---|
-| `min` | `Date \| null` | `null` | Minimum selectable date |
-| `max` | `Date \| null` | `null` | Maximum selectable date |
-| `presets` | `DateRangePreset[]` | built-in 9 | Preset list shown in the sidebar |
-| `showPresets` | `boolean` | `true` | Show / hide the preset sidebar |
-| `showModeSelector` | `boolean` | `true` | Show / hide the day/month/year toggle |
 | `selectionMode` | `'date' \| 'month' \| 'year'` | `'date'` | Default active mode |
 | `lockedMode` | `SelectionMode \| null` | `null` | Force a mode and hide the selector |
 | `enableTimePicker` | `boolean` | `false` | Enable start/end time inputs |
+| `presets` | `DateRangePreset[]` | built-in 9 | Preset list shown in the sidebar |
+| `min` | `Date \| null` | `null` | Minimum selectable date |
+| `max` | `Date \| null` | `null` | Maximum selectable date |
+| `dateFormat` | `string` | `'mediumDate'` | Angular date format used in the trigger display |
+| `placeholder` | `string` | `'Select a date range'` | Text shown when no range is selected |
+| `disabled` | `boolean` | `false` | Disable the component; CVA compatible |
+| `required` | `boolean` | `false` | Mark the trigger as required |
+| `showModeSelector` | `boolean` | `true` | Show / hide the day/month/year toggle |
+| `showPresets` | `boolean` | `true` | Show / hide the preset sidebar |
 | `layout` | `'auto' \| 'horizontal' \| 'vertical'` | `'auto'` | Panel layout |
 | `position` | `PickerPosition` | `'auto'` | Overlay position (see below) |
+| `enableMobile` | `boolean` | `false` | Enable the mobile overlay automatically below 768 px |
+| `mobilePanelPosition` | `MobilePanelPosition` | `'fullscreen'` | Mobile panel placement |
+| `disableAnimations` | `boolean` | `false` | Disable library-owned animations and transitions |
 
 ### `position` values
 
@@ -147,6 +156,23 @@ export class MyComponent {
 | `'bottom-end'` | Below the trigger, aligned right |
 | `'top-start'` | Above the trigger, aligned left |
 | `'top-end'` | Above the trigger, aligned right |
+
+### Mobile overlay
+
+`enableMobile` does not force mobile mode permanently. It allows the component to switch when the viewport is narrow:
+
+```text
+mobile mode = enableMobile && viewport width <= 767px
+```
+
+| `mobilePanelPosition` value | Behaviour |
+|---|---|
+| `'fullscreen'` | Covers the viewport |
+| `'left'` | Opens as a left side panel |
+| `'right'` | Opens as a right side panel |
+| `'bottom'` | Opens as a bottom sheet |
+
+`disableAnimations` only disables animations and transitions owned by this library. Angular Material animations still follow the application's Angular Material configuration.
 
 ---
 
@@ -195,6 +221,8 @@ const myPresets: DateRangePreset[] = [
 <ngx-dual-rangepicker [presets]="myPresets" />
 ```
 
+Presets outside the current `min` / `max` constraints remain visible but disabled, so users can understand why the shortcut is unavailable.
+
 ---
 
 ## Internationalisation
@@ -210,8 +238,9 @@ const myIntl: DualCalendarIntl = {
   daysLabel: 'Jours',
   monthsLabel: 'Mois',
   yearsLabel: 'Années',
-  startTimeLabel: 'Heure de début',
-  endTimeLabel: 'Heure de fin',
+  timeLabel: 'Heure',
+  startTimeLabel: 'Début',
+  endTimeLabel: 'Fin',
 };
 
 // in providers:
@@ -230,6 +259,7 @@ The component is styled with Angular Material M3 system tokens. You can also ove
 | `--drp-panel-padding` | `16px` | Inner padding of the main area |
 | `--drp-preset-width` | `168px` | Width of the preset sidebar |
 | `--drp-calendar-gap` | `16px` | Gap between the two calendar panels |
+| `--drp-mobile-panel-width` | `420px` | Width of left/right mobile panels |
 
 ---
 

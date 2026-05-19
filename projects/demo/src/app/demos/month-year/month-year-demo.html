@@ -12,6 +12,8 @@
     <ngx-dual-rangepicker
       selectionMode="month"
       placeholder="Select a month range"
+      [enableMobile]="true"
+      mobilePanelPosition="left"
       [(ngModel)]="monthResult"
     />
   </div>
@@ -28,6 +30,8 @@
     <ngx-dual-rangepicker
       selectionMode="year"
       placeholder="Select a year range"
+      [enableMobile]="true"
+      mobilePanelPosition="left"
       [(ngModel)]="yearResult"
     />
   </div>

@@ -62,6 +62,20 @@
     </div>
 
     <div class="pg-group">
+      <div class="pg-label">mobilePanelPosition</div>
+      <mat-button-toggle-group
+        [value]="mobilePanelPosition()"
+        (change)="mobilePanelPosition.set($event.value)"
+        hideSingleSelectionIndicator
+      >
+        <mat-button-toggle value="left">left</mat-button-toggle>
+        <mat-button-toggle value="right">right</mat-button-toggle>
+        <mat-button-toggle value="bottom">bottom</mat-button-toggle>
+        <mat-button-toggle value="fullscreen">full</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+
+    <div class="pg-group">
       <mat-form-field appearance="outline" subscriptSizing="dynamic" style="width:100%">
         <mat-label>placeholder</mat-label>
         <input matInput [value]="placeholder()" (input)="placeholder.set($any($event.target).value)" />
@@ -71,6 +85,9 @@
     <div class="pg-toggles">
       <mat-slide-toggle [checked]="enableTimePicker()" (change)="enableTimePicker.set($event.checked)">
         enableTimePicker
+      </mat-slide-toggle>
+      <mat-slide-toggle [checked]="enableMobile()" (change)="enableMobile.set($event.checked)">
+        enableMobile
       </mat-slide-toggle>
       <mat-slide-toggle [checked]="showPresets()" (change)="showPresets.set($event.checked)">
         showPresets
@@ -83,6 +100,9 @@
       </mat-slide-toggle>
       <mat-slide-toggle [checked]="required()" (change)="required.set($event.checked)">
         required
+      </mat-slide-toggle>
+      <mat-slide-toggle [checked]="disableAnimations()" (change)="disableAnimations.set($event.checked)">
+        disableAnimations
       </mat-slide-toggle>
     </div>
 
@@ -187,12 +207,15 @@
         [lockedMode]="lockedMode()"
         [position]="position()"
         [enableTimePicker]="enableTimePicker()"
+        [enableMobile]="enableMobile()"
+        [mobilePanelPosition]="mobilePanelPosition()"
         [showPresets]="showPresets()"
         [showModeSelector]="showModeSelector()"
         [layout]="layout()"
         [placeholder]="placeholder()"
         [disabled]="disabled()"
         [required]="required()"
+        [disableAnimations]="disableAnimations()"
         [ngStyle]="pickerStyle()"
         [(ngModel)]="result"
       />

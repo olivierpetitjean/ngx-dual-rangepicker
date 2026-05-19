@@ -2,8 +2,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  effect,
-  ElementRef,
   forwardRef,
   inject,
   input,
@@ -12,13 +10,14 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
+import { formatDate } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { DateAdapter } from '@angular/material/core';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { DateRange } from '@angular/material/datepicker';
 import {
   CdkConnectedOverlay,
@@ -30,7 +29,13 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { map } from 'rxjs';
 
 import { DualCalendarPanelComponent } from './dual-calendar-panel.component';
-import { DateRangePreset, DateRangeResult, PickerPosition, SelectionMode } from './date-range-picker.models';
+import {
+  DateRangePreset,
+  DateRangeResult,
+  MobilePanelPosition,
+  PickerPosition,
+  SelectionMode,
+} from './date-range-picker.models';
 import { DEFAULT_PRESETS } from './date-range-picker.presets';
 
 const POSITIONS: Record<Exclude<PickerPosition, 'auto'>, ConnectedPosition> = {
@@ -70,8 +75,7 @@ const AUTO_POSITIONS: ConnectedPosition[] = [
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NgxDualRangepickerComponent implements ControlValueAccessor, OnDestroy {
-  private readonly dateAdapter = inject<DateAdapter<Date>>(DateAdapter);
-  private readonly host = inject(ElementRef);
+  private readonly locale = (inject(MAT_DATE_LOCALE, { optional: true }) as string | null) ?? 'en-US';
 
   // ── Inputs ────────────────────────────────────────────────────────────────
   readonly selectionMode = input<SelectionMode>('date');
@@ -89,6 +93,8 @@ export class NgxDualRangepickerComponent implements ControlValueAccessor, OnDest
   readonly layout = input<'auto' | 'horizontal' | 'vertical'>('auto');
   readonly position = input<PickerPosition>('auto');
   readonly enableMobile = input<boolean>(false);
+  readonly mobilePanelPosition = input<MobilePanelPosition>('fullscreen');
+  readonly disableAnimations = input<boolean>(false);
 
   // ── Outputs ───────────────────────────────────────────────────────────────
   readonly rangeChanged = output<DateRangeResult>();
@@ -113,8 +119,17 @@ export class NgxDualRangepickerComponent implements ControlValueAccessor, OnDest
   readonly isMobileActive = computed(() => this.enableMobile() && this.isNarrow());
 
   /** CDK overlay panel class — adds drp-overlay-mobile for full-screen on mobile. */
-  readonly overlayPanelClass = computed<string>(() =>
-    this.isMobileActive() ? 'drp-overlay-mobile' : '',
+  readonly overlayPanelClass = computed<string[]>(() =>
+    [
+      this.isMobileActive() ? 'drp-overlay-mobile' : '',
+      this.isMobileActive() ? `drp-overlay-mobile-${this.mobilePanelPosition()}` : '',
+      this.disableAnimations() ? 'drp-disable-animations' : '',
+    ].filter(Boolean),
+  );
+
+  readonly backdropClass = computed<string[]>(() =>
+    ['drp-backdrop', this.disableAnimations() ? 'drp-disable-animations' : '']
+      .filter(Boolean)
   );
 
   readonly overlayPositions = computed<ConnectedPosition[]>(() => {
@@ -202,8 +217,7 @@ export class NgxDualRangepickerComponent implements ControlValueAccessor, OnDest
 
   private formatRange(start: Date, end: Date): string {
     try {
-      const fmt = (d: Date) =>
-        this.dateAdapter.format(d, { year: 'numeric', month: 'short', day: 'numeric' } as any);
+      const fmt = (d: Date) => formatDate(d, this.dateFormat(), this.locale);
       return `${fmt(start)} – ${fmt(end)}`;
     } catch {
       return `${start.toLocaleDateString()} – ${end.toLocaleDateString()}`;

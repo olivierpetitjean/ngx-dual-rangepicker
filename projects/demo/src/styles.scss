@@ -79,6 +79,31 @@ body { font-family: Roboto, 'Helvetica Neue', sans-serif; }
   line-height: 1.25;
 }
 
+@media (max-width: 599px) {
+  .demo-page-title {
+    font-size: 1.25rem;
+  }
+
+  .demo-page-subtitle {
+    margin-bottom: 24px;
+  }
+
+  .demo-section {
+    margin-bottom: 28px;
+  }
+
+  .demo-box,
+  .demo-controls {
+    border-radius: 8px;
+    padding: 16px;
+  }
+
+  .demo-json {
+    font-size: 0.75rem;
+    max-height: 240px;
+  }
+}
+
 .demo-page-subtitle {
   font-size: 0.9375rem;
   color: var(--mat-sys-on-surface-variant);

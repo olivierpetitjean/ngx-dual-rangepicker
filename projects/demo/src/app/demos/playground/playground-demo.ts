@@ -12,6 +12,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import {
   NgxDualRangepickerComponent,
   DateRangeResult,
+  MobilePanelPosition,
   PickerPosition,
   SelectionMode,
 } from 'ngx-dual-rangepicker';
@@ -56,12 +57,15 @@ export class PlaygroundDemoComponent {
   position = signal<PickerPosition>('auto');
   fieldAnchor = signal<string>('top-left');
   enableTimePicker = signal(false);
+  enableMobile = signal(true);
+  mobilePanelPosition = signal<MobilePanelPosition>('left');
   showPresets = signal(true);
   showModeSelector = signal(true);
   layout = signal<'auto' | 'horizontal' | 'vertical'>('auto');
   placeholder = signal('Select a date range');
   disabled = signal(false);
   required = signal(false);
+  disableAnimations = signal(false);
 
   // ── CSS custom properties ─────────────────────────────────────────────────
   borderRadius = signal(THEME_DEFAULTS.borderRadius);
@@ -98,6 +102,10 @@ export class PlaygroundDemoComponent {
     if (this.lockedMode() !== null) attrs.push(`lockedMode="${this.lockedMode()}"`);
     if (this.position() !== 'auto') attrs.push(`position="${this.position()}"`);
     if (this.enableTimePicker()) attrs.push(`[enableTimePicker]="true"`);
+    if (this.enableMobile()) attrs.push(`[enableMobile]="true"`);
+    if (this.enableMobile() && this.mobilePanelPosition() !== 'fullscreen') {
+      attrs.push(`mobilePanelPosition="${this.mobilePanelPosition()}"`);
+    }
     if (!this.showPresets()) attrs.push(`[showPresets]="false"`);
     if (!this.showModeSelector()) attrs.push(`[showModeSelector]="false"`);
     if (this.layout() !== 'auto') attrs.push(`layout="${this.layout()}"`);
@@ -105,6 +113,7 @@ export class PlaygroundDemoComponent {
       attrs.push(`placeholder="${this.placeholder()}"`);
     if (this.disabled()) attrs.push(`[disabled]="true"`);
     if (this.required()) attrs.push(`[required]="true"`);
+    if (this.disableAnimations()) attrs.push(`[disableAnimations]="true"`);
     attrs.push(`[(ngModel)]="result"`);
     const indent = attrs.map(a => `  ${a}`).join('\n');
 

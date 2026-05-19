@@ -9,7 +9,12 @@
 <section class="demo-section">
   <h2 class="demo-section-title">Default (inherits your M3 theme)</h2>
   <div class="demo-box">
-    <ngx-dual-rangepicker placeholder="Default theme" [(ngModel)]="resultDefault" />
+    <ngx-dual-rangepicker
+      placeholder="Default theme"
+      [enableMobile]="true"
+      mobilePanelPosition="left"
+      [(ngModel)]="resultDefault"
+    />
   </div>
   <app-code-snippet label="styles.scss" [code]="snippetTheme" />
 </section>
@@ -21,6 +26,8 @@
     <ngx-dual-rangepicker
       class="picker-rounded"
       placeholder="Rounded style"
+      [enableMobile]="true"
+      mobilePanelPosition="left"
       [(ngModel)]="resultRounded"
     />
   </div>
@@ -34,6 +41,8 @@
     <ngx-dual-rangepicker
       class="picker-compact"
       placeholder="Compact style"
+      [enableMobile]="true"
+      mobilePanelPosition="left"
       [showPresets]="false"
       [showModeSelector]="false"
       [(ngModel)]="resultCompact"

@@ -53,6 +53,7 @@ describe('TimePickerComponent', () => {
     it('should show startError for non-time input', () => {
       component.onStartTimeInput('abc');
       expect(component.startError()).toBeTruthy();
+      expect(component.timeValid()).toBeFalse();
     });
 
     it('should show startError for out-of-range hours', () => {
@@ -79,6 +80,7 @@ describe('TimePickerComponent', () => {
       component.onStartTimeInput('08:00');
       component.onStartTimeBlur();
       expect(component.startError()).toBe('');
+      expect(component.timeValid()).toBeTrue();
     });
 
     it('should not validate cross-time order when sameDay is false', () => {
@@ -112,6 +114,7 @@ describe('TimePickerComponent', () => {
       component.onEndTimeInput('09:00');
       component.onEndTimeBlur();
       expect(component.endError()).toContain('End time must be after start time');
+      expect(component.timeValid()).toBeFalse();
     });
 
     it('should not set endError when end equals start', () => {
@@ -128,6 +131,7 @@ describe('TimePickerComponent', () => {
       component.onEndTimeInput('17:00');
       component.onEndTimeBlur();
       expect(component.endError()).toBe('');
+      expect(component.timeValid()).toBeTrue();
     });
   });
 });

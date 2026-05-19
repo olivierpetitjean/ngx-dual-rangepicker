@@ -15,6 +15,8 @@ export class TimeDemoComponent {
 
   readonly snippetHtml = `<ngx-dual-rangepicker
   [enableTimePicker]="true"
+  [enableMobile]="true"
+  mobilePanelPosition="left"
   placeholder="Select a date and time range"
 />`;
 

@@ -17,10 +17,14 @@ export class MonthYearDemoComponent {
   readonly snippetMonth = `<ngx-dual-rangepicker
   selectionMode="month"
   placeholder="Select months"
+  [enableMobile]="true"
+  mobilePanelPosition="left"
 />`;
 
   readonly snippetYear = `<ngx-dual-rangepicker
   selectionMode="year"
   placeholder="Select years"
+  [enableMobile]="true"
+  mobilePanelPosition="left"
 />`;
 }

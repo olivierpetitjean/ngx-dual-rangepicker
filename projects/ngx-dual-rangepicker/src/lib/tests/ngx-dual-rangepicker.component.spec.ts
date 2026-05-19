@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -69,6 +69,14 @@ describe('NgxDualRangepickerComponent', () => {
     expect(component.isOpen()).toBeFalse();
   });
 
+  it('should expose animation disabling classes to the overlay and backdrop', () => {
+    fixture.componentRef.setInput('disableAnimations', true);
+    fixture.detectChanges();
+
+    expect(component.overlayPanelClass()).toContain('drp-disable-animations');
+    expect(component.backdropClass()).toContain('drp-disable-animations');
+  });
+
   it('Escape key should close the panel', () => {
     component.open();
     component.onOverlayKeydown(new KeyboardEvent('keydown', { key: 'Escape' }));
@@ -127,6 +135,12 @@ describe('NgxDualRangepickerComponent', () => {
     it('should update displayValue when given a valid range', () => {
       component.writeValue({ start: new Date(2024, 0, 1), end: new Date(2024, 0, 31) });
       expect(component.displayValue()).toBeTruthy();
+    });
+
+    it('should format displayValue with the dateFormat input', () => {
+      fixture.componentRef.setInput('dateFormat', 'yyyy-MM-dd');
+      component.writeValue({ start: new Date(2024, 0, 1), end: new Date(2024, 0, 31) });
+      expect(component.displayValue()).toBe('2024-01-01 – 2024-01-31');
     });
 
     it('should clear displayValue when given null', () => {

@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { JsonPipe } from '@angular/common';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { NgxDualRangepickerComponent, DateRangeResult } from 'ngx-dual-rangepicker';
 import { CodeSnippetComponent } from '../../shared/code-snippet';
 
@@ -13,7 +12,6 @@ import { CodeSnippetComponent } from '../../shared/code-snippet';
     JsonPipe,
     ReactiveFormsModule,
     MatButtonModule,
-    MatSlideToggleModule,
     NgxDualRangepickerComponent,
     CodeSnippetComponent,
   ],
@@ -32,7 +30,11 @@ export class ReactiveFormDemoComponent {
     this.rangeControl.reset();
   }
 
-  readonly snippetHtml = `<ngx-dual-rangepicker [formControl]="rangeControl" />
+  readonly snippetHtml = `<ngx-dual-rangepicker
+  [enableMobile]="true"
+  mobilePanelPosition="left"
+  [formControl]="rangeControl"
+/>
 
 <!-- Validation state -->
 @if (rangeControl.invalid && rangeControl.touched) {

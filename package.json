@@ -12,7 +12,8 @@
     "test": "ng test ngx-dual-rangepicker --watch=false --code-coverage",
     "test:watch": "ng test ngx-dual-rangepicker",
     "test:demo": "ng test demo --watch=false",
-    "lint": "ng lint",
+    "typecheck": "ng build ngx-dual-rangepicker --configuration=production && ng build demo --configuration=development",
+    "lint": "npm run typecheck",
     "prepublish:lib": "npm run build:lib",
     "publish:lib": "cd build/ngx-dual-rangepicker && npm publish",
     "publish:lib:dry": "cd build/ngx-dual-rangepicker && npm publish --dry-run"

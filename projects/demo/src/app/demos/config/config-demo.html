@@ -1,6 +1,6 @@
 <h1 class="demo-page-title">API — Configuration</h1>
 <p class="demo-page-subtitle">
-  Toutes les options disponibles à gauche — le picker se met à jour en temps réel.
+  Les options principales sont disponibles à gauche — le picker se met à jour en temps réel.
   Le snippet généré reflète exactement ta configuration.
 </p>
 
@@ -38,6 +38,20 @@
       </div>
 
       <div class="knob-group">
+        <div class="knob-label">mobilePanelPosition</div>
+        <mat-button-toggle-group
+          [value]="mobilePanelPosition()"
+          (change)="mobilePanelPosition.set($event.value)"
+          hideSingleSelectionIndicator
+        >
+          <mat-button-toggle value="left">left</mat-button-toggle>
+          <mat-button-toggle value="right">right</mat-button-toggle>
+          <mat-button-toggle value="bottom">bottom</mat-button-toggle>
+          <mat-button-toggle value="fullscreen">full</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+
+      <div class="knob-group">
         <mat-form-field appearance="outline" subscriptSizing="dynamic">
           <mat-label>placeholder</mat-label>
           <input
@@ -54,6 +68,9 @@
         <mat-slide-toggle [checked]="enableTimePicker()" (change)="enableTimePicker.set($event.checked)">
           enableTimePicker
         </mat-slide-toggle>
+        <mat-slide-toggle [checked]="enableMobile()" (change)="enableMobile.set($event.checked)">
+          enableMobile
+        </mat-slide-toggle>
         <mat-slide-toggle [checked]="showPresets()" (change)="showPresets.set($event.checked)">
           showPresets
         </mat-slide-toggle>
@@ -66,6 +83,9 @@
         <mat-slide-toggle [checked]="required()" (change)="required.set($event.checked)">
           required
         </mat-slide-toggle>
+        <mat-slide-toggle [checked]="disableAnimations()" (change)="disableAnimations.set($event.checked)">
+          disableAnimations
+        </mat-slide-toggle>
       </div>
     </div>
 
@@ -75,12 +95,15 @@
         <ngx-dual-rangepicker
           [selectionMode]="selectionMode()"
           [enableTimePicker]="enableTimePicker()"
+          [enableMobile]="enableMobile()"
+          [mobilePanelPosition]="mobilePanelPosition()"
           [showPresets]="showPresets()"
           [showModeSelector]="showModeSelector()"
           [layout]="layout()"
           [placeholder]="placeholder()"
           [disabled]="disabled()"
           [required]="required()"
+          [disableAnimations]="disableAnimations()"
           [(ngModel)]="result"
         />
       </div>
@@ -116,10 +139,34 @@
           <td>Granularité de la sélection</td>
         </tr>
         <tr>
+          <td><code>lockedMode</code></td>
+          <td><code>SelectionMode | null</code></td>
+          <td><code>null</code></td>
+          <td>Force un mode et masque le sélecteur Jours / Mois / Années</td>
+        </tr>
+        <tr>
           <td><code>enableTimePicker</code></td>
           <td><code>boolean</code></td>
           <td><code>false</code></td>
           <td>Affiche les champs Start / End time</td>
+        </tr>
+        <tr>
+          <td><code>enableMobile</code></td>
+          <td><code>boolean</code></td>
+          <td><code>false</code></td>
+          <td>Autorise le panneau responsive mobile sur viewport étroit</td>
+        </tr>
+        <tr>
+          <td><code>mobilePanelPosition</code></td>
+          <td><code>'left' | 'right' | 'bottom' | 'fullscreen'</code></td>
+          <td><code>'fullscreen'</code></td>
+          <td>Position du panneau lorsque le mode mobile est actif</td>
+        </tr>
+        <tr>
+          <td><code>disableAnimations</code></td>
+          <td><code>boolean</code></td>
+          <td><code>false</code></td>
+          <td>Désactive les animations et transitions internes du composant</td>
         </tr>
         <tr>
           <td><code>presets</code></td>
@@ -146,10 +193,22 @@
           <td>Disposition du panneau (auto = responsive)</td>
         </tr>
         <tr>
+          <td><code>position</code></td>
+          <td><code>PickerPosition</code></td>
+          <td><code>'auto'</code></td>
+          <td>Position de l'overlay desktop</td>
+        </tr>
+        <tr>
           <td><code>placeholder</code></td>
           <td><code>string</code></td>
           <td><code>'Select a date range'</code></td>
           <td>Texte affiché dans le champ vide</td>
+        </tr>
+        <tr>
+          <td><code>dateFormat</code></td>
+          <td><code>string</code></td>
+          <td><code>'mediumDate'</code></td>
+          <td>Format Angular utilisé pour la valeur affichée dans le trigger</td>
         </tr>
         <tr>
           <td><code>min</code></td>
